@@ -29,9 +29,9 @@ spec:
     # https://github.com/kubernetes-sigs/external-dns/blob/master/docs/sources/sources.md
     sources:
     - ingress
-    - gateway-httproute
-    - gateway-tcproute
-    - gateway-tlsroute
+    # - gateway-httproute
+    # - gateway-tcproute
+    # - gateway-tlsroute
     # - gateway-grcproute
     # - gateway-udproute
 
