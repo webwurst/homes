@@ -1,0 +1,43 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager
+spec:
+  dependsOn:
+  - name: cert-manager-crds
+  sourceRef:
+    kind: GitRepository
+    name: github-homes
+  path: ./deploy/cert-manager
+  interval: 1h
+  prune: true
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: cert-manager-crds
+spec:
+  sourceRef:
+    kind: GitRepository
+    name: github-homes
+  path: ./deploy/cert-manager/crds
+  prune: false
+  interval: 1h
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  patches:
+  - target:
+      kind: CustomResourceDefinition
+    patch: |-
+      - op: add
+        path: /metadata/labels
+        value:
+          kustomize.toolkit.fluxcd.io/prune: disabled

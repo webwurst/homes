@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: flux-system
 resources:
 - flux-components.yaml
-- flux-system.yaml
-- monitoring.yaml
-- ingress-nginx.yaml
-# - external-dns.yaml
+- sync/flux-system.yaml
+- sync/monitoring.yaml
+- sync/ingress-nginx.yaml
+- sync/external-dns.yaml

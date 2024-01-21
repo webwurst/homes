@@ -27,7 +27,7 @@ spec:
     kind: GitRepository
     name: github-homes
   path: ./deploy/monitoring/crds
-  prune: true
+  prune: false
   interval: 1h
   decryption:
     provider: sops
