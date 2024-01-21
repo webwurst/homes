@@ -16,7 +16,8 @@ spec:
   values:
     # https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/values.yaml
 
-    kind: DaemonSet
+    controller:
+      kind: DaemonSet
 
     tolerations:
     - key: dedicated
