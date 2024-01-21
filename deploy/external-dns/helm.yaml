@@ -1,0 +1,64 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: external-dns
+spec:
+  interval: 1h
+  releaseName: external-dns
+  chart:
+    spec:
+      chart: external-dns
+      # https://artifacthub.io/packages/helm/external-dns/external-dns
+      version: "~1.14.1"
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns
+  install:
+    crds: Skip
+  upgrade:
+    crds: Skip
+  values:
+    # default values: https://github.com/kubernetes-sigs/external-dns/blob/master/charts/external-dns/values.yaml
+
+    serviceMonitor:
+      enabled: true
+
+    interval: 1h
+    triggerLoopOnEvent: true
+
+    # https://github.com/kubernetes-sigs/external-dns/blob/master/docs/sources/sources.md
+    sources:
+    - ingress
+    - gateway-httproute
+    - gateway-tcproute
+    - gateway-tlsroute
+    # - gateway-grcproute
+    # - gateway-udproute
+
+    txtOwnerId: homes
+    domainFilters: ["webwur.st"]
+
+    provider:
+      name: webhook
+      webhook:
+        image:
+          repository: ghcr.io/mrueg/external-dns-netcup-webhook
+        # https://github.com/mrueg/external-dns-netcup-webhook/blob/main/main.go#L23-L33
+        env:
+        - name: NETCUP_CUSTOMER_ID
+          valueFrom:
+            secretKeyRef:
+              name: netcup-api
+              key: customer-id
+        - name: NETCUP_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: netcup-api
+              key: api-key
+        - name: NETCUP_API_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: netcup-api
+              key: api-password
+        serviceMonitor: {}
+          # FIXME add `enabled` upstream
