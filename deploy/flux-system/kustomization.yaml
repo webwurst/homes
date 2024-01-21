@@ -8,3 +8,4 @@ resources:
 - sync/monitoring.yaml
 - sync/ingress-nginx.yaml
 - sync/external-dns.yaml
+- sync/cert-manager.yaml
