@@ -19,37 +19,37 @@ spec:
     controller:
       kind: DaemonSet
 
-    tolerations:
-    - key: dedicated
-      operator: Equal
-      value: gateway
-      effect: NoSchedule
+      tolerations:
+      - key: dedicated
+        operator: Equal
+        value: gateway
+        effect: NoSchedule
 
-    # nodeSelector:
-    #   topology.kubernetes.io/zone: gateway
+      # nodeSelector:
+      #   topology.kubernetes.io/zone: gateway
 
-    service:
-      enabled: false
+      service:
+        enabled: false
 
-    hostPort:
-      enabled: true
-
-    metrics:
-      enabled: true
-      serviceMonitor:
+      hostPort:
         enabled: true
 
-      prometheusRule:
+      networkPolicy:
         enabled: true
-        # rules: []
 
-    networkPolicy:
-      enabled: true
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+
+        prometheusRule:
+          enabled: true
+          # rules: []
+
+      opentelemetry:
+        enabled: false
 
     ## Default 404 backend
     ##
     defaultBackend:
-      enabled: false
-
-    opentelemetry:
       enabled: false
