@@ -20,6 +20,11 @@ spec:
   values:
     # default values: https://github.com/kubernetes-sigs/external-dns/blob/master/charts/external-dns/values.yaml
 
+    # FIXME create non-root user in Dockerfile upstream
+    #   https://github.com/mrueg/external-dns-netcup-webhook
+    podSecurityContext:
+      runAsNonRoot: false
+
     serviceMonitor:
       enabled: true
 
