@@ -20,3 +20,6 @@ secretGenerator:
   - customer-id=./netcup-api/customer-id
   - api-key=./netcup-api/api-key
   - api-password=./netcup-api/api-password
+  # FIXME add kustomize reference instead
+  options:
+    disableNameSuffixHash: true

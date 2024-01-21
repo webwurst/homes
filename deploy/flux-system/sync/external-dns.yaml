@@ -5,6 +5,7 @@ metadata:
 spec:
   dependsOn:
   - name: monitoring-crds
+  # - name: gateway-crds  # FIXME
   sourceRef:
     kind: GitRepository
     name: github-homes

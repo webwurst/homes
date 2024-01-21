@@ -42,9 +42,9 @@ spec:
         serviceMonitor:
           enabled: true
 
-        prometheusRule:
-          enabled: true
-          # rules: []
+        # prometheusRule:
+        #   enabled: true
+        #   # rules: []
 
       opentelemetry:
         enabled: false
