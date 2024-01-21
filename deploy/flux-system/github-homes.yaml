@@ -1,9 +1,9 @@
-# apiVersion: source.toolkit.fluxcd.io/v1
-# kind: GitRepository
-# metadata:
-#   name: github-homes
-# spec:
-#   interval: 10m0s
-#   ref:
-#     branch: main
-#   url: https://github.com/webwurst/homes.git
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: github-homes
+spec:
+  interval: 10m0s
+  ref:
+    branch: main
+  url: https://github.com/webwurst/homes.git
