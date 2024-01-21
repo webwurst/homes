@@ -43,6 +43,7 @@ spec:
       webhook:
         image:
           repository: ghcr.io/mrueg/external-dns-netcup-webhook
+          tag: latest
         # https://github.com/mrueg/external-dns-netcup-webhook/blob/main/main.go#L23-L33
         env:
         - name: NETCUP_CUSTOMER_ID
