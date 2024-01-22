@@ -1,9 +1,11 @@
+---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: openebs
 spec:
-  # dependsOn:
+  dependsOn:
+  - name: openebs-crds
   # - name: monitoring-crds
   sourceRef:
     kind: GitRepository
@@ -15,3 +17,28 @@ spec:
     provider: sops
     secretRef:
       name: sops-age
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: openebs-crds
+spec:
+  sourceRef:
+    kind: GitRepository
+    name: github-homes
+  path: ./deploy/openebs/crds
+  prune: false
+  interval: 1h
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+  patches:
+  - target:
+      kind: CustomResourceDefinition
+    patch: |-
+      - op: add
+        path: /metadata/labels
+        value:
+          kustomize.toolkit.fluxcd.io/prune: disabled
