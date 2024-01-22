@@ -3,9 +3,10 @@ kind: Kustomization
 
 namespace: flux-system
 resources:
-- flux-components.yaml
-- sync/flux-system.yaml
-- sync/monitoring.yaml
-- sync/ingress-nginx.yaml
-- sync/external-dns.yaml
-- sync/cert-manager.yaml
+- ./flux-components.yaml
+- ./sync/flux-system.yaml
+- ./sync/monitoring.yaml
+- ./sync/ingress-nginx.yaml
+- ./sync/external-dns.yaml
+- ./sync/cert-manager.yaml
+- ./sync/openebs.yaml
