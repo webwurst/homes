@@ -1,0 +1,21 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: zfs-localpv
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: zfs-localpv
+      # https://github.com/nextcloud/all-in-one/releases
+      # $ helm repo add zfs-localpv https://openebs.github.io/zfs-localpv && helm search repo zfs-localpv --versions
+      version: "~2.4.0"
+      sourceRef:
+        kind: HelmRepository
+        name: zfs-localpv
+  install:
+    crds: Skip
+  upgrade:
+    crds: Skip
+  values:
+    # for defaults see https://github.com/openebs/zfs-localpv/blob/develop/deploy/helm/charts/values.yaml
