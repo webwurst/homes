@@ -3,6 +3,11 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: external-dns
+  labels:
+    # FIXME pod must not set securityContext.runAsNonRoot=false
+    # https://kubernetes.io/docs/concepts/security/pod-security-admission/#exemptions
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce-version: latest
 
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
