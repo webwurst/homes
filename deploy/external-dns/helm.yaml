@@ -90,4 +90,4 @@ spec:
                 containers:
                 - name: webhook
                   args:
-                  - --domain-filter="webwur.st"
+                  - --domain-filter=webwur.st
