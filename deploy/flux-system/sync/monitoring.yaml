@@ -1,21 +1,21 @@
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: monitoring
-# spec:
-#   dependsOn:
-#   - name: monitoring-crds
-#   interval: 1h
-#   path: ./deploy/monitoring
-#   prune: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: flux-system
-#   decryption:
-#     provider: sops
-#     secretRef:
-#       name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: monitoring
+spec:
+  dependsOn:
+  - name: monitoring-crds
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./deploy/monitoring
+  prune: true
+  interval: 1h
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
