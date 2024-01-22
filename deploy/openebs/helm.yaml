@@ -19,3 +19,7 @@ spec:
     crds: Skip
   values:
     # for defaults see https://github.com/openebs/zfs-localpv/blob/develop/deploy/helm/charts/values.yaml
+
+    zfsNode:
+      # kubeletDir: "/var/lib/kubelet/"
+      encrKeysDir: /var/openebs-zfs-node/keys
