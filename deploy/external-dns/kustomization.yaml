@@ -6,6 +6,7 @@ resources:
 - manifests.yaml
 - helm.yaml
 
+# FIXME does not work with helm?
 images:
 - name: registry.k8s.io/external-dns/external-dns
   newTag: v0.14.0

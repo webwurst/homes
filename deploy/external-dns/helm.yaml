@@ -91,3 +91,4 @@ spec:
                 - name: webhook
                   args:
                   - --domain-filter=webwur.st
+                  - --log-level=debug
