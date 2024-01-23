@@ -11,3 +11,4 @@ resources:
 - ./sync/cert-manager.yaml
 - ./sync/openebs.yaml
 - ./sync/local-path-storage.yaml
+- ./sync/nextcloud.yaml

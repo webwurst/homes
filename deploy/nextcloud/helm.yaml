@@ -1,0 +1,69 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: nextcloud
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: nextcloud-aio-helm-chart
+      # https://github.com/nextcloud/all-in-one/releases
+      # $ helm repo add nextcloud-aio https://nextcloud.github.io/all-in-one/ && helm search repo nextcloud-aio --versions
+      version: "~7.10.0"
+      sourceRef:
+        kind: HelmRepository
+        name: nextcloud-aio
+  install:
+    crds: Skip
+  upgrade:
+    crds: Skip
+
+  valuesFrom:
+  - kind: Secret
+    name: nextcloud-helm-secrets
+
+  values:
+    # for defaults see https://github.com/nextcloud/all-in-one/blob/main/nextcloud-aio-helm-chart/values.yaml
+
+    # for the following settings see ./helm-secrets.yaml
+    #   DATABASE_PASSWORD:
+    #   FULLTEXTSEARCH_PASSWORD:
+    #   NEXTCLOUD_PASSWORD:
+    #   ONLYOFFICE_SECRET:
+    #   RECORDING_SECRET:
+    #   REDIS_PASSWORD:
+    #   SIGNALING_SECRET:
+    #   TALK_INTERNAL_SECRET:
+    #   TURN_SECRET:
+
+    # Needs to be changed to the domain that you want to use for Nextcloud.
+    NC_DOMAIN: nextcloud.webwur.st
+
+    # By changing this, you can adjust the namespace of the installation which allows to install multiple instances on one kubernetes cluster
+    NAMESPACE: nextcloud
+
+    # Allows to add one additional ip-address to Nextcloud's trusted proxies and to the Office WOPI-allowlist automatically. Set it e.g. like this: 'your.public.ip-address'. You can also use an ip-range here.
+    # ADDITIONAL_TRUSTED_PROXY:
+
+    # This is the timezone that your containers will use.
+    # TIMEZONE: Europe/Berlin
+    TIMEZONE: UTC
+
+    # Changing this to a different value than 443 will allow you to run it behind a web server or reverse proxy (like Apache, Nginx, Cloudflare Tunnel and else).
+    APACHE_PORT: 8443
+
+    # This allows to change the PHP memory limit of the Nextcloud container
+    NEXTCLOUD_MEMORY_LIMIT: 512M
+
+    # By setting this, you can adjust the storage class for your volumes
+    STORAGE_CLASS: local-path
+    APACHE_STORAGE_SIZE: 1Gi
+    CLAMAV_STORAGE_SIZE: 1Gi
+    DATABASE_STORAGE_SIZE: 1Gi
+    DATABASE_DUMP_STORAGE_SIZE: 1Gi
+    ELASTICSEARCH_STORAGE_SIZE: 1Gi
+    NEXTCLOUD_STORAGE_SIZE: 5Gi
+    NEXTCLOUD_DATA_STORAGE_SIZE: 5Gi
+    NEXTCLOUD_TRUSTED_CACERTS_STORAGE_SIZE: 1Gi
+    ONLYOFFICE_STORAGE_SIZE: 1Gi
+    REDIS_STORAGE_SIZE: 1Gi
