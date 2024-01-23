@@ -10,3 +10,4 @@ resources:
 - ./sync/external-dns.yaml
 - ./sync/cert-manager.yaml
 - ./sync/openebs.yaml
+- ./local-path-storage.yaml
