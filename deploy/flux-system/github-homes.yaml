@@ -1,9 +1,20 @@
+---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
   name: github-homes
 spec:
-  interval: 10m0s
+  interval: 15m0s
   ref:
     branch: main
   url: https://github.com/webwurst/homes.git
+
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: homes
+spec:
+  type: oci
+  interval: 15m0s
+  url: oci://ghcr.io/webwurst/homes
