@@ -4,7 +4,6 @@ kind: Kustomization
 namespace: local-path-storage
 resources:
 - manifests.yaml
-- helm.yaml
 
 images:
 - name: docker.io/rancher/local-path-provisioner

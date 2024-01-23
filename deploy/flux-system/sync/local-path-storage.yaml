@@ -1,0 +1,15 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: local-path-storage
+spec:
+  sourceRef:
+    kind: GitRepository
+    name: github-homes
+  path: ./deploy/local-path-storage
+  prune: true
+  interval: 1h
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
