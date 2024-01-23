@@ -76,5 +76,6 @@ spec:
           kind: namespace
           metadata:
             name: nextcloud
+            namespace: nextcloud
             annotations:
               config.kubernetes.io/local-config: "true"
