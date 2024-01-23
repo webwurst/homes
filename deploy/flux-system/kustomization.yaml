@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: flux-system
 resources:
 - ./flux-components.yaml
+- ./github-homes.yaml
 - ./sync/flux-system.yaml
 - ./sync/monitoring.yaml
 - ./sync/ingress-nginx.yaml
