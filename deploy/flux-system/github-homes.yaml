@@ -17,4 +17,4 @@ metadata:
 spec:
   type: oci
   # interval: 15m0s
-  url: oci://ghcr.io/webwurst/homes
+  url: oci://ghcr.io/webwurst
