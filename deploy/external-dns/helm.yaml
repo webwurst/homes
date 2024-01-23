@@ -56,7 +56,7 @@ spec:
         args:
         - --log-level=debug
         # # seems to be required
-        - --domain-filter="webwur.st"
+        - --domain-filter=webwur.st
         # https://github.com/mrueg/external-dns-netcup-webhook/blob/main/main.go#L23-L33
         env:
         - name: NETCUP_CUSTOMER_ID
