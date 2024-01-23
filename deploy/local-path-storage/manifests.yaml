@@ -3,6 +3,11 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: local-path-storage
+  labels:
+    # FIXME error syncing claim "12a51888-80e3-41b4-9ec9-5223acd292ce": failed to provision volume with StorageClass "local-path": failed to create volume pvc-12a51888-80e3-41b4-9ec9-5223acd292ce: pods "helper-pod-create-pvc-12a51888-80e3-41b4-9ec9-5223acd292ce" is forbidden: violates PodSecurity "baseline:latest": hostPath volumes (volume "data")
+    # https://kubernetes.io/docs/concepts/security/pod-security-admission/#exemptions
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce-version: latest
 
 ---
 apiVersion: v1
