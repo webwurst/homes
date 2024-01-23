@@ -12,7 +12,9 @@ spec:
       version: "~1.14.1"
       sourceRef:
         kind: HelmRepository
-        name: external-dns
+        # name: external-dns
+        namespace: flux-system
+        name: homes
   install:
     crds: Skip
   upgrade:
@@ -51,10 +53,10 @@ spec:
           tag: latest
         # FIXME remove "-" on upstream chart
         # https://github.com/kubernetes-sigs/external-dns/blob/master/charts/external-dns/templates/deployment.yaml#L147
-        # args:
-        # - --log-level=debug
+        args:
+        - --log-level=debug
         # # seems to be required
-        # - --domain-filter="webwur.st"
+        - --domain-filter="webwur.st"
         # https://github.com/mrueg/external-dns-netcup-webhook/blob/main/main.go#L23-L33
         env:
         - name: NETCUP_CUSTOMER_ID
@@ -75,20 +77,20 @@ spec:
         serviceMonitor: {}
           # FIXME add `enabled` upstream
 
-  postRenderers:
-  - kustomize:
-      patches:
-      - patch: |-
-          apiVersion: apps/v1
-          kind: Deployment
-          metadata:
-            name: external-dns
-            namespace: external-dns
-          spec:
-            template:
-              spec:
-                containers:
-                - name: webhook
-                  args:
-                  - --domain-filter=webwur.st
-                  - --log-level=debug
+  # postRenderers:
+  # - kustomize:
+  #     patches:
+  #     - patch: |-
+  #         apiVersion: apps/v1
+  #         kind: Deployment
+  #         metadata:
+  #           name: external-dns
+  #           namespace: external-dns
+  #         spec:
+  #           template:
+  #             spec:
+  #               containers:
+  #               - name: webhook
+  #                 args:
+  #                 - --domain-filter=webwur.st
+  #                 - --log-level=debug
