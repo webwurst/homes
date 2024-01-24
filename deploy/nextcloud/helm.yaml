@@ -43,7 +43,7 @@ spec:
     NC_DOMAIN: nextcloud.webwur.st
 
     # By changing this, you can adjust the namespace of the installation which allows to install multiple instances on one kubernetes cluster
-    NAMESPACE: nextcloud
+    # NAMESPACE: nextcloud
 
     # Allows to add one additional ip-address to Nextcloud's trusted proxies and to the Office WOPI-allowlist automatically. Set it e.g. like this: 'your.public.ip-address'. You can also use an ip-range here.
     # ADDITIONAL_TRUSTED_PROXY:
