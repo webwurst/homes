@@ -76,4 +76,5 @@ spec:
       patches:
       - patch: |-
           metadata:
+            name: *
             namespace: nextcloud
