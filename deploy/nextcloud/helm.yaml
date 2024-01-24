@@ -70,16 +70,3 @@ spec:
     NEXTCLOUD_TRUSTED_CACERTS_STORAGE_SIZE: 1Gi
     ONLYOFFICE_STORAGE_SIZE: 1Gi
     REDIS_STORAGE_SIZE: 1Gi
-
-  postRenderers:
-  - kustomize:
-      patches:
-      - patch: |-
-          apiVersion: apps/v1
-          kind: namespace
-          metadata:
-            name: nextcloud
-            namespace: nextcloud
-            annotations:
-              config.kubernetes.io/local-config: "true"
-          spec: {}
