@@ -23,3 +23,6 @@ spec:
     zfsNode:
       # kubeletDir: "/var/lib/kubelet/"
       encrKeysDir: /var/openebs-zfs-node/keys
+
+    crd:
+      enableInstall: false

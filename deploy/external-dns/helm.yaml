@@ -9,16 +9,20 @@ spec:
     spec:
       chart: external-dns
       # https://artifacthub.io/packages/helm/external-dns/external-dns
-      version: "~1.14.1"
+      version: "~1.14.1-patch1"
       sourceRef:
         kind: HelmRepository
         # name: external-dns
         namespace: flux-system
         name: homes
+  storageNamespace: flux-system
   install:
     crds: Skip
   upgrade:
     crds: Skip
+  # postRenderers:
+  # - kustomize:
+  #     images:
   values:
     # default values: https://github.com/kubernetes-sigs/external-dns/blob/master/charts/external-dns/values.yaml
 

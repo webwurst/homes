@@ -8,11 +8,14 @@ spec:
     spec:
       chart: nextcloud-aio-helm-chart
       # https://github.com/nextcloud/all-in-one/releases
-      # $ helm repo add nextcloud-aio https://nextcloud.github.io/all-in-one/ && helm search repo nextcloud-aio --versions
-      version: "~7.10.0"
+      # $ helm repo add --force-update nextcloud-aio https://nextcloud.github.io/all-in-one/ && helm search repo nextcloud-aio/nextcloud-aio-helm-chart --versions
+      version: "~7.10.0-patch1"
       sourceRef:
         kind: HelmRepository
-        name: nextcloud-aio
+        # name: nextcloud-aio
+        namespace: flux-system
+        name: homes
+  storageNamespace: flux-system
   install:
     crds: Skip
   upgrade:
@@ -79,3 +82,4 @@ spec:
             namespace: nextcloud
             annotations:
               config.kubernetes.io/local-config: "true"
+          spec: {}
