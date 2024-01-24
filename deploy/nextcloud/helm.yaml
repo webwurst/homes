@@ -9,7 +9,7 @@ spec:
       chart: nextcloud-aio-helm-chart
       # https://github.com/nextcloud/all-in-one/releases
       # $ helm repo add --force-update nextcloud-aio https://nextcloud.github.io/all-in-one/ && helm search repo nextcloud-aio/nextcloud-aio-helm-chart --versions
-      version: "~7.10.0-patch1"
+      version: "~7.10.0-patch2"
       sourceRef:
         kind: HelmRepository
         # name: nextcloud-aio
@@ -70,11 +70,3 @@ spec:
     NEXTCLOUD_TRUSTED_CACERTS_STORAGE_SIZE: 1Gi
     ONLYOFFICE_STORAGE_SIZE: 1Gi
     REDIS_STORAGE_SIZE: 1Gi
-
-  postRenderers:
-  - kustomize:
-      patches:
-      - patch: |-
-          metadata:
-            name: *
-            namespace: nextcloud
