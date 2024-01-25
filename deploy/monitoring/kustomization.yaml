@@ -8,7 +8,7 @@ namespace: monitoring
 resources:
 - ./manifests.yaml
 - ./grafana/
-# - loki
-# - mimir
-# - grafana-agent
-# - kube-prometheus-stack
+- ./mimir
+# - ./loki
+# - ./grafana-agent
+# - ./kube-prometheus-stack
