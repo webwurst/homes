@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: grafana-datasource-mimir
+    labels:
+        grafana_datasource: "1"
+stringData:
+    mimir.yaml: ""

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-datasource-alertmanager
+  labels:
+    grafana_datasource: "1"
+data:
+  alertmanager.yaml: |-
+    apiVersion: 1
+    datasources:
+    - name: Alertmanager
+      type: alertmanager
+      typeName: Alertmanager
+      typeLogoUrl: public/app/plugins/datasource/alertmanager/img/logo.svg
+      uid: alertmanager
+      url: http://mimir-alertmanager:8080
+      access: proxy
+      # jsonData:

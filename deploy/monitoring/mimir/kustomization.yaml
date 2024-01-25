@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ./manifests.yaml
+- ./helm.yaml
+# - grafana-datasource-mimir.yaml
+# - grafana-datasource-alertmanager.yaml
+
+secretGenerator:
+- name: mimir-helm-secrets
+  files:
+  - values.yaml=./helm-secrets.yaml
