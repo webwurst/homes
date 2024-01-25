@@ -8,10 +8,10 @@ metadata:
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: HelmRepository
 metadata:
-  name: nextcloud
+  name: nextcloud-aio
 spec:
   interval: 1h
-  url: https://nextcloud.github.io/helm/
+  url: https://nextcloud.github.io/all-in-one/
 
 ---
 apiVersion: cert-manager.io/v1

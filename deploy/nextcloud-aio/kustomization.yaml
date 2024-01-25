@@ -9,7 +9,7 @@ resources:
 - manifests.yaml
 - helm.yaml
 
-# secretGenerator:
-# - name: nextcloud-helm-secrets
-#   files:
-#   - values.yaml=helm-secrets.yaml
+secretGenerator:
+- name: nextcloud-helm-secrets
+  files:
+  - values.yaml=helm-secrets.yaml
