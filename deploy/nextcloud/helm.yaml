@@ -24,3 +24,11 @@ spec:
 
   values:
     # for defaults see https://github.com/nextcloud/helm/blob/main/charts/nextcloud/values.yaml
+
+    ingress:
+      enabled: true
+      className: nginx
+
+    nextcloud:
+      host: nextcloud.webwur.st
+      # for `password` see ./helm-secrets.yaml
