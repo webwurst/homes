@@ -58,6 +58,9 @@ spec:
 
       # example for single-node local-drive https://github.com/grafana/mimir/blob/main/docs/configurations/demo.yaml
 
+      # https://github.com/grafana/mimir/blob/main/docs/configurations/single-process-config-blocks.yaml
+      
+
       structuredConfig:
         usage_stats:
           enabled: false
@@ -102,16 +105,12 @@ spec:
 
     alertmanager:
       replicas: 1
-      statefulSet:
-        enabled: false
       persistentVolume:
         enabled: true
         size: 1Gi
 
     ingester:
       replicas: 1
-      statefulSet:
-        enabled: false
       persistentVolume:
         enabled: true
         size: 2Gi
