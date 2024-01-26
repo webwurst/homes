@@ -73,6 +73,15 @@ spec:
             # filesystem: 
 
         # blocks_storage:
+        #   backend: filesystem
+        #   bucket_store:
+        #     sync_dir: /tmp/mimir/tsdb-sync
+        #   filesystem:
+        #     dir: /tmp/mimir/data/tsdb
+        #   tsdb:
+        #     dir: /tmp/mimir/tsdb
+
+        # blocks_storage:
         #   bucket_store:
         #     sync_dir: /data/tsdb-sync
 
@@ -81,6 +90,11 @@ spec:
         #     head_compaction_interval: 15m
         #     wal_replay_concurrency: 3
 
+        compactor:
+          # data_dir: /tmp/mimir/compactor
+          sharding_ring:
+            kvstore:
+              store: memberlist
 
         # alertmanager_storage:
         #   s3.bucket_name: mimir-ruler
