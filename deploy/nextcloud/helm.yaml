@@ -28,7 +28,11 @@ spec:
     ingress:
       enabled: true
       className: nginx
-
+      tls:
+      - secretName: nextcloud-cert
+        hosts:
+        - nextcloud.webwur.st
+  
     nextcloud:
       host: nextcloud.webwur.st
       # for `password` see ./helm-secrets.yaml
