@@ -1,0 +1,74 @@
+---
+# 
+
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: github-homes
+spec:
+  interval: 15m0s
+  url: https://github.com/webwurst/homes.git
+  ref:
+    branch: main
+
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  # FIXME github-homes
+  name: homes
+spec:
+  type: oci
+  url: oci://ghcr.io/webwurst/homes
+
+
+---
+# https://fluxcd.io/flux/guides/webhook-receivers/
+
+apiVersion: notification.toolkit.fluxcd.io/v1
+kind: Receiver
+metadata:
+  # FIXME maybe homes-webhook?
+  name: github-webhook
+  namespace: flux-system
+spec:
+  type: github
+  events:
+  - ping
+  - push
+  secretRef:
+    name: github-webhook
+  resources:
+    - kind: GitRepository
+      name: github-homes
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: github-webhook
+spec:
+  selector:
+    app: notification-controller
+  ports:
+  - name: http
+    port: 9292
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: github-webhook
+spec:
+  rules:
+  - host: flux-webhook.webwur.st
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: github-webhook
+            port:
+              number: 9292
+

@@ -1,10 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+configurations:
+- ../kustomizeconfig.yaml
+
 namespace: flux-system
 resources:
 - ./flux-components.yaml
-- ./github-homes.yaml
+- ./github-repo.yaml
 - ./sync/flux-system.yaml
 - ./sync/monitoring.yaml
 - ./sync/ingress-nginx.yaml
@@ -14,3 +17,8 @@ resources:
 - ./sync/local-path-storage.yaml
 # - ./sync/nextcloud-aio.yaml
 - ./sync/nextcloud.yaml
+
+secretGenerator:
+- name: github-webhook
+  files:
+  - values.yaml=./github-webhook-secret
