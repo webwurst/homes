@@ -67,10 +67,11 @@ spec:
 
         multitenancy_enabled: false
 
-        common:
-          storage:
-            backend: filesystem
-            # filesystem: 
+        # not needed, default?
+        # common:
+        #   storage:
+        #     backend: filesystem
+        #     # filesystem: 
 
         blocks_storage:
           backend: filesystem
