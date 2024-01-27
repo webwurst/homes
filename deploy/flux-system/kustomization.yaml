@@ -6,6 +6,7 @@ configurations:
 
 namespace: flux-system
 resources:
+- ./namespace.yaml
 # - ./flux-components.yaml
 - ./flux-components-minus-crds.yaml
 - ./github-repo.yaml
