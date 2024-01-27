@@ -28,11 +28,7 @@ spec:
     name: github-homes
   path: ./deploy/monitoring/crds
   prune: false
-  interval: 1h
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
+  interval: 1h0m
   patches:
   - target:
       kind: CustomResourceDefinition
