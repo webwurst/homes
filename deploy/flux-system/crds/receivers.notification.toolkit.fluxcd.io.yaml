@@ -115,9 +115,6 @@ spec:
                   name:
                     description: Name of the referent.
                     type: string
-                    x-kubernetes-object-ref-api-version: v1
-                    x-kubernetes-object-ref-kind: Secret
-                    x-kubernetes-object-ref-name-key: name
                 required:
                 - name
                 type: object
