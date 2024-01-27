@@ -29,7 +29,7 @@ apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Receiver
 metadata:
   # FIXME maybe homes-webhook?
-  name: github-webhook
+  name: flux-webhook
   namespace: flux-system
 spec:
   type: github
@@ -37,7 +37,7 @@ spec:
   - ping
   - push
   secretRef:
-    name: github-webhook
+    name: flux-webhook
   resources:
     - kind: GitRepository
       name: github-homes
@@ -46,7 +46,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: github-webhook
+  name: flux-webhook
 spec:
   selector:
     app: notification-controller
@@ -58,8 +58,9 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: github-webhook
+  name: flux-webhook
 spec:
+  ingressClassName: nginx
   rules:
   - host: flux-webhook.webwur.st
     http:
@@ -68,7 +69,23 @@ spec:
         path: /
         backend:
           service:
-            name: github-webhook
+            name: flux-webhook
             port:
               number: 9292
+  tls:
+  - hosts:
+    - flux-webhook.webwur.st
+    secretName: flux-webhook-cert
 
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: flux-webhook
+spec:
+  secretName: flux-webhook-cert
+  dnsNames:
+  - flux-webhook.webwur.st
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-cluster-issuer
