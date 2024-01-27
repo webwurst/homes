@@ -20,6 +20,6 @@ resources:
 - ./sync/nextcloud.yaml
 
 secretGenerator:
-- name: github-webhook
+- name: flux-webhook
   files:
-  - token=./github-webhook-secret
+  - token=./flux-webhook-secret
