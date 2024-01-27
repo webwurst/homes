@@ -34,7 +34,7 @@ spec:
     serviceMonitor:
       enabled: true
 
-    interval: 1h
+    interval: 10m
     triggerLoopOnEvent: true
 
     # https://github.com/kubernetes-sigs/external-dns/blob/master/docs/sources/sources.md
