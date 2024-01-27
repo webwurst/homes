@@ -1,0 +1,132 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+  namespace: monitoring
+spec:
+  interval: 1h0m
+  releaseName: kube-prometheus-stack
+  chart:
+    spec:
+      # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+      chart: kube-prometheus-stack
+      version: "~55.5.0"
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+  install:
+    crds: Skip
+  upgrade:
+    crds: Skip
+  values:
+    # default values: https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-prometheus-stack/values.yaml
+
+    defaultRules:
+      create: true
+      rules:
+        alertmanager: true
+        etcd: false
+        configReloaders: true
+        general: true
+        k8s: true
+        kubeApiserverAvailability: true
+        kubeApiserverBurnrate: true
+        kubeApiserverHistogram: true
+        kubeApiserverSlos: true
+        kubeControllerManager: true
+        kubelet: true
+        kubeProxy: true
+        kubePrometheusGeneral: true
+        kubePrometheusNodeRecording: true
+        kubernetesApps: true
+        kubernetesResources: true
+        kubernetesStorage: true
+        kubernetesSystem: true
+        kubeSchedulerAlerting: true
+        kubeSchedulerRecording: true
+        kubeStateMetrics: true
+        network: true
+        node: true
+        nodeExporterAlerting: true
+        nodeExporterRecording: true
+        prometheus: true
+        prometheusOperator: false
+        windows: false
+      ## Disabled PrometheusRule alerts
+      disabled: {}
+      # KubeAPIDown: true
+      # NodeRAIDDegraded: true
+
+    grafana:
+      # dashboards only
+      enabled: false
+      forceDeployDashboards: true
+      forceDeployDatasources: false
+      defaultDashboardsEnabled: true
+      sidecar:
+        dashboards:
+          enabled: true
+          label: grafana_dashboard
+          labelValue: "1"
+          # Allow discovery in all namespaces for dashboards
+          searchNamespace: ALL
+          multicluster:
+            global:
+              enabled: true
+        datasources:
+          enabled: true
+
+    kubernetesServiceMonitors:
+      enabled: true
+    kubeApiServer:
+      enabled: true
+    kubelet:
+      # see for missing magic: https://github.com/prometheus-operator/prometheus-operator/issues/4938#issuecomment-1822904397
+      enabled: true
+    kubeProxy:
+      enabled: true
+    kubeStateMetrics:
+      enabled: true
+    nodeExporter:
+      enabled: true
+    coreDns:
+      enabled: true
+      service:
+        selector:
+          app.kubernetes.io/name: coredns
+
+    kube-state-metrics:
+      # https://github.com/prometheus-community/helm-charts/blob/main/charts/kube-state-metrics/values.yaml
+      resources:
+        requests:
+         cpu: 10m
+         memory: 32Mi
+
+    prometheusOperator:
+      # only needed to create endpoints and service for kubelet
+      # FIXME(tube) restrict rbac if possible
+      enabled: true
+      tls:
+        enabled: false
+      admissionWebhooks:
+        enabled: false
+      kubeletService:
+        enabled: true
+        namespace: kube-system
+
+    alertmanager:
+      enabled: false
+    kubeControllerManager:
+      enabled: false
+    kubeDns:
+      enabled: false
+    kubeEtcd:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+    prometheus:
+      enabled: false
+    thanosRuler:
+      enabled: false
+    crds:
+      enabled: false
