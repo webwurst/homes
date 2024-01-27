@@ -21,4 +21,4 @@ resources:
 secretGenerator:
 - name: github-webhook
   files:
-  - values.yaml=./github-webhook-secret
+  - token=./github-webhook-secret
