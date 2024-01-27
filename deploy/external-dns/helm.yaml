@@ -35,7 +35,8 @@ spec:
       enabled: true
 
     interval: 10m
-    triggerLoopOnEvent: true
+    # triggerLoopOnEvent: true
+    triggerLoopOnEvent: false
 
     # https://github.com/kubernetes-sigs/external-dns/blob/master/docs/sources/sources.md
     sources:
