@@ -1,0 +1,54 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: grafana-agent
+spec:
+  interval: 1h0m
+  releaseName: grafana-agent
+  install:
+    crds: Skip
+  upgrade:
+    crds: Skip
+  chart:
+    spec:
+      # https://artifacthub.io/packages/helm/grafana/grafana-agent
+      chart: grafana-agent
+      version: "~0.29.0"
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+  values:
+    # https://github.com/grafana/agent/blob/main/operations/helm/charts/grafana-agent/values.yaml
+
+    serviceMonitor:
+      enabled: true
+
+    crds:
+      create: false
+
+    agent:
+      clustering:
+        enabled: true
+      configMap:
+        create: false
+        name: grafana-agent
+        key: config.river
+      mounts:
+        extra:
+        - name: config-secrets
+          mountPath: /var/secrets
+          readOnly: true
+      resources:
+        requests:
+          cpu: 100m
+          memory: 0.5Gi
+
+    controller:
+      type: deployment
+      replicas: 1
+
+      volumes:
+        extra:
+        - name: config-secrets
+          secret:
+            secretName: grafana-agent-config-secrets

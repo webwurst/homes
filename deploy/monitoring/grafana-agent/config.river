@@ -1,0 +1,86 @@
+// https://grafana.com/docs/agent/latest/flow/getting-started/collect-prometheus-metrics/
+// https://grafana.com/docs/agent/latest/flow/reference/components/
+//
+// AGENT_MODE=flow grafana-agent fmt --write ./deploy/monitoring/grafana-agent/config.river
+
+// --- metrics
+
+prometheus.operator.servicemonitors "default" {
+	forward_to = [prometheus.remote_write.default.receiver]
+}
+
+prometheus.operator.podmonitors "default" {
+	forward_to = [prometheus.remote_write.default.receiver]
+}
+
+prometheus.remote_write "default" {
+	external_labels = {"cluster" = "bonpland"}
+
+	endpoint {
+		url = "https://mimir.webwur.st/api/v1/push"
+
+		basic_auth {
+			username      = "basicauth"
+			password_file = "/var/secrets/prometheus-password"
+		}
+	}
+}
+
+// --- logs
+
+discovery.kubernetes "pods_for_loki" {
+	role = "pod"
+
+	namespaces {
+		own_namespace = false
+	}
+}
+
+discovery.relabel "pods_for_loki" {
+	targets = discovery.kubernetes.pods_for_loki.targets
+
+	rule {
+		action = "labelmap"
+		regex  = "__meta_kubernetes_(.+)"
+	}
+	rule {
+		// leave out pod-annotations and -labels for now
+		action = "labeldrop"
+		regex  = "pod_(annotation|label)(.+)"
+	}
+}
+
+loki.source.kubernetes "pods_for_loki" {
+	targets = discovery.relabel.pods_for_loki.output
+	forward_to = [loki.write.default.receiver]
+}
+
+// --- kubernetes events
+
+loki.source.kubernetes_events "default" {
+	log_format = "logfmt" // "json"
+	forward_to = [loki.write.default.receiver]
+}
+
+loki.source.podlogs "default" {
+	forward_to = [loki.write.default.receiver]
+}
+
+loki.write "default" {
+	external_labels = {"cluster" = "bonpland"}
+
+	endpoint {
+		url = "https://loki.webwur.st/loki/api/v1/push"
+
+		basic_auth {
+			username      = "basicauth"
+			password_file = "/var/secrets/loki-password"
+		}
+	}
+}
+
+// --- rules
+
+mimir.rules.kubernetes "local" {
+	address = "http://mimir-ruler:8080"
+}

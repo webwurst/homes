@@ -10,5 +10,5 @@ resources:
 - ./grafana
 - ./mimir
 - ./loki
-# - ./grafana-agent
+- ./grafana-agent
 - ./kube-prometheus-stack
