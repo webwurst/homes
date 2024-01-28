@@ -5,4 +5,24 @@ metadata:
     labels:
         grafana_datasource: "1"
 stringData:
-    loki.yaml: ""
+    loki.yaml: ENC[AES256_GCM,data:IoKwx4YzkhF1IY6fJyNXPqPcC0ZPrV6WaN9dbcLh8rV4HfZD6p4b+VNdr4jY8H1vrYHHhrEC9Z/gx3FJx9eRIOT41XhDNRNdKeCuvWpzDvbdhrvjfVNZTLEA+SFIENe0lKZAt1WmjuMkt45yBlxDwcX7u2Mia5ohPd+nv3I+B6IT4GtdtoVe3k5Md89wuUSmRSWaUivyE/o5n4r5UkchJN8cisk28X6/BBZQ/kbLAZse+zI5E+AeqC8os1raqrYO8kWVwpS+zgAxkqqAB39fprwYtEFXEMxy8AiZr52bSgDz85lFV9RiaXjyXE+laqVHwI/v6/2TMVOtV4BHZs5R5StZflDp0nO7z1t5dEQOPTqtO+9hWuRGAdTOjfmHEHHP0hX2wsaJp68=,iv:kRltRxznu+UQ4gmxBKye9PzOfyfv4xltBoc7f87aGyg=,tag:aSE7RjG0nrG/2kOtV552hw==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1cw2ap3s3ufwreunvql5xpk56hf77hdkp4y586fcghpxeq27nw9zq0mse9a
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB5WG9BNXBXR3BzZ2p4ZGp3
+            VUc5ZWpSWk03bUZNUi9nbm5tTWxYYzR1ZlVrCkc4TXFGd1htY0hncm52Tmo0VUEw
+            Y1htYU51QlNucE41Tkovd2VraStHZDgKLS0tIGNsSXVZWXltU28wQ3kzWUJZbkRJ
+            YzN4MEVNSUsxTUhDbU9FZFNtNzZ2VEUKSBE992mNi5M8M5JiWj3HEhxhSes//Q7Y
+            XpwojyL2KYdnRbBh18bpn2sk/d166A/rufCyqOFZg0BD4j0C4WNFpg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-01-28T23:41:12Z"
+    mac: ENC[AES256_GCM,data:2zwf1CBCuSNdNqYelpNURxHt/xlhRiLrUReWLw0cO0zqmDJbxk0MzqafIUrGzPRO6AAcxaRh4p2PqY6KHYjsWUZDhIY6oEqFXTI0HtrSNTwN1JXBptlSyTDrF7X9VSGwERAE481zVkNTWuvYVk2UnCRFk82oEgF2cjCf+a/4mjE=,iv:chz+4FfeZXU1kvEq7fFnttP6LahAN1JNDr83bfnmldU=,tag:R3gvMWb8d5fuxWF7zc3nBg==,type:str]
+    pgp: []
+    encrypted_suffix: stringData
+    version: 3.8.1
