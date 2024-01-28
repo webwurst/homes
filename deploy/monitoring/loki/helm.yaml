@@ -30,9 +30,6 @@ spec:
     # [!]
     # https://grafana.com/docs/loki/latest/setup/install/helm/install-monolithic/
 
-    global:
-      dnsService: "coredns"
-
     # networkPolicy:
     #   enabled: true
 
