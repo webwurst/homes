@@ -1,0 +1,104 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: monitoring
+spec:
+  interval: 1h0m
+  releaseName: loki
+  install:
+    crds: Skip
+  upgrade:
+    crds: Skip
+  chart:
+    spec:
+      # https://artifacthub.io/packages/helm/grafana/loki
+      chart: loki
+      version: "~5.41.4"
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+  valuesFrom:
+  - kind: Secret
+    name: loki-helm-secrets
+  values:
+    # https://grafana.com/docs/loki/latest/setup/install/helm/install-scalable/
+    # https://grafana.com/docs/loki/v2.9.x/configure/examples/
+    # default values: https://grafana.com/docs/loki/latest/setup/install/helm/reference/
+    # https://github.com/grafana/loki/blob/main/production/helm/loki/values.yaml
+
+    # [!]
+    # https://grafana.com/docs/loki/latest/setup/install/helm/install-monolithic/
+
+    global:
+      dnsService: "coredns"
+
+    # networkPolicy:
+    #   enabled: true
+
+    gateway:
+      ingress:
+        enabled: true
+        ingressClassName: nginx
+        hosts:
+        - host: loki.webwur.st
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - secretName: loki-cert
+          hosts:
+          - loki.webwur.st
+      basicAuth:
+        enabled: true
+        username: basicauth
+        # for `password:` see helm-secrets.yaml
+
+    monitoring:
+      # collides with grafana-agent flow-mode because of some CRD version mismatch (?)
+      selfMonitoring:
+        enabled: false
+        grafanaAgent:
+          installOperator: false
+
+    test:
+      enabled: false
+
+    loki:
+      commonConfig:
+        replication_factor: 1
+      storage:
+        type: 'filesystem'      
+
+      auth_enabled: false
+
+    singleBinary:
+      replicas: 1
+
+
+    # https://grafana.com/docs/loki/latest/operations/storage/retention/#retention-configuration
+    # https://grafana.com/docs/loki/latest/storage/#examples
+
+    # compactor:
+    #   working_directory: /data/retention
+    #   shared_store: gcs
+    #   compaction_interval: 10m
+    #   retention_enabled: true
+    #   retention_delete_delay: 2h
+    #   retention_delete_worker_count: 150
+    # schema_config:
+    #     configs:
+    #       - from: "2020-07-31"
+    #         index:
+    #             period: 24h
+    #             prefix: loki_index_
+    #         object_store: gcs
+    #         schema: v11
+    #         store: boltdb-shipper
+    # storage_config:
+    #     boltdb_shipper:
+    #         active_index_directory: /data/index
+    #         cache_location: /data/boltdb-cache
+    #         shared_store: gcs
+    #     gcs:
+    #         bucket_name: loki

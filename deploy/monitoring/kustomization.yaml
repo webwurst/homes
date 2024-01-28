@@ -9,6 +9,6 @@ resources:
 - ./manifests.yaml
 - ./grafana
 - ./mimir
-# - ./loki
+- ./loki
 # - ./grafana-agent
 - ./kube-prometheus-stack
