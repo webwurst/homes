@@ -6,18 +6,15 @@ configurations:
 
 namespace: flux-system
 resources:
-# - ./flux-components.yaml
-- ./flux-components-minus-crds.yaml
-- ./github-repo.yaml
-- ./sync/flux-system.yaml
-- ./sync/monitoring.yaml
-- ./sync/ingress-nginx.yaml
-- ./sync/external-dns.yaml
-- ./sync/cert-manager.yaml
-- ./sync/openebs.yaml
-- ./sync/local-path-storage.yaml
-# - ./sync/nextcloud-aio.yaml
-- ./sync/nextcloud.yaml
+- ./components
+- ./cert-manager.yaml
+- ./external-dns.yaml
+- ./flux-system.yaml
+- ./ingress-nginx.yaml
+- ./local-path-storage.yaml
+- ./monitoring.yaml
+- ./nextcloud.yaml
+- ./openebs.yaml
 
 secretGenerator:
 - name: flux-webhook

@@ -1,0 +1,8 @@
+nameReference:
+- kind: Secret
+  version: v1
+  fieldSpecs:
+  - group: notification.toolkit.fluxcd.io
+    version: v1
+    kind: Receiver
+    path: spec/secretRef/name

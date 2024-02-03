@@ -1,10 +1,8 @@
 ---
-# 
-
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: github-homes
+  name: homes
 spec:
   interval: 15m0s
   url: https://github.com/webwurst/homes.git
@@ -15,12 +13,10 @@ spec:
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  # FIXME github-homes
   name: homes
 spec:
   type: oci
   url: oci://ghcr.io/webwurst/homes
-
 
 ---
 # https://fluxcd.io/flux/guides/webhook-receivers/
@@ -28,8 +24,7 @@ spec:
 apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Receiver
 metadata:
-  # FIXME maybe homes-webhook?
-  name: flux-webhook
+  name: homes
   namespace: flux-system
 spec:
   type: github
@@ -37,10 +32,10 @@ spec:
   - ping
   - push
   secretRef:
-    name: flux-webhook
+    name: homes-webhook
   resources:
     - kind: GitRepository
-      name: github-homes
+      name: homes
 
 ---
 apiVersion: v1
