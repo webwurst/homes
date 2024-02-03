@@ -15,8 +15,3 @@ resources:
 - ./monitoring.yaml
 - ./nextcloud.yaml
 - ./openebs.yaml
-
-secretGenerator:
-- name: flux-webhook
-  files:
-  - token=./flux-webhook-secret

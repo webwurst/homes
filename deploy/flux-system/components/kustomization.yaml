@@ -4,7 +4,6 @@ kind: Kustomization
 configurations:
 - ./kustomizeconfig.yaml
 
-namespace: flux-system
 resources:
 - ./flux-components-minus-crds.yaml
 - ./repo-homes.yaml
