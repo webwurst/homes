@@ -10,9 +10,9 @@ resources:
 - helm.yaml
 
 secretGenerator:
-- name: client-secrets
+- name: oidc-secrets
   files:
-  - bitbucket-client-secret
+  - github-connector-secret
   - grafana-client-secret
   - flux-dashboard-client-secret
   options:

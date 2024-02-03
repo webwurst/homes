@@ -128,22 +128,22 @@ spec:
       # auth:
       #   disable_login_form: true
 
-      # # do NOT split this key...
-      # auth.generic_oauth:
-      #   enabled: true
-      #   name: dex/GitHub
-      #   client_id: grafana
-      #   auto_login: false
-      #   allow_sign_up: true
-      #   # for `client_secret` see ./helm-secrets.yaml
-      #   auth_url: https://dex.webwur.st/auth
-      #   token_url: https://dex.webwur.st/token
-      #   api_url: https://dex.webwur.st/userinfo
-      #   use_refresh_token: true
-      #   # https://dexidp.io/docs/custom-scopes-claims-clients/#scopes
-      #   # for refresh token: offline_access
-      #   scopes: openid email profile groups offline_access
-      #   # scopes: openid profile email offline_access account
+      # do NOT split this key...
+      auth.generic_oauth:
+        enabled: true
+        name: dex OIDC via GitHub
+        client_id: grafana
+        auto_login: false
+        allow_sign_up: true
+        # for `client_secret` see ./helm-secrets.yaml
+        auth_url: https://dex.webwur.st/auth
+        token_url: https://dex.webwur.st/token
+        api_url: https://dex.webwur.st/userinfo
+        use_refresh_token: true
+        # https://dexidp.io/docs/custom-scopes-claims-clients/#scopes
+        # for refresh token: offline_access
+        scopes: openid email profile groups offline_access
+        # scopes: openid profile email offline_access account
 
         # team_ids:
         # role_attribute_path: contains(groups[*], `SRE`) && 'Admin' || contains(groups[*], `devops`) && 'Admin' || 'Editor'

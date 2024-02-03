@@ -1,0 +1,108 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: dex
+  namespace: dex
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: dex
+      # https://artifacthub.io/packages/helm/dex/dex
+      version: "~0.16.0"
+      sourceRef:
+        kind: HelmRepository
+        name: dex
+  install:
+    crds: Skip
+  upgrade:
+    crds: Skip
+  values:
+    # for defaults see https://github.com/dexidp/helm-charts/blob/master/charts/dex/values.yaml
+
+    envVars:
+    - name: GITHUB_CONNECTOR_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: oidc-secrets
+          key: github-connector-secret
+    - name: GRAFANA_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: oidc-secrets
+          key: grafana-client-secret
+    - name: FLUX_DASHBOARD_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: oidc-secrets
+          key: flux-dashboard-client-secret
+
+    config:
+      # example config https://github.com/dexidp/dex/blob/master/examples/config-dev.yaml
+
+      # The base path of dex and the external name of the OpenID Connect service.
+      issuer: https://dex.webwur.st
+
+      connectors:
+      # https://dexidp.io/docs/connectors/github/
+      - id: github
+        type: github
+        name: GitHub
+        config:
+          clientID: 314cc51d585fb2ebbfc6
+          clientSecret: $GITHUB_CONNECTOR_SECRET
+          redirectURI: https://dex.webwur.st/callback
+
+          # flag which will switch from using the internal GitHub id to the users handle (@mention) as the user id.
+          # It is possible for a user to change their own user name but it is very rare for them to do so
+          # useLoginAsID: false
+
+          loadAllGroups: false
+          teamNameField: slug
+          orgs:
+          - name: webwurst
+            # Allow-list of teams to read for the groups scope -> ["<orgs-name>:<team-name>"]
+            teams:
+            - grafana-admin
+            - grafana-viewer
+
+      staticClients:
+      # https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/configure-authentication/generic-oauth/
+      - id: grafana
+        name: Grafana
+        secretEnv: GRAFANA_CLIENT_SECRET
+        redirectURIs:
+        - https://grafana.webwur.st/login/generic_oauth
+
+      # https://docs.gitops.weave.works/docs/configuration/oidc-access/
+      - id: flux-ui
+        name: Flux UI
+        secretEnv: FLUX_UI_CLIENT_SECRET
+        redirectURIs:
+        - https://flux.webwur.st/oauth2/callback
+        # needed when running `$ gitops check oidc-config`:
+        - http://localhost:9876
+
+      storage:
+        type: kubernetes
+        config:
+          inCluster: true
+
+    ingress:
+      enabled: true
+      className: nginx
+      hosts:
+      - host: '{{ trimPrefix "https://" .Values.config.issuer }}'
+        paths:
+        - path: /
+          pathType: ImplementationSpecific
+      tls:
+      - secretName: dex-cert
+        hosts:
+        - '{{ trimPrefix "https://" .Values.config.issuer }}'
+
+    serviceMonitor:
+      enabled: true
+
+    networkPolicy:
+      enabled: true
