@@ -34,8 +34,8 @@ spec:
   secretRef:
     name: homes-webhook
   resources:
-    - kind: GitRepository
-      name: homes
+  - kind: GitRepository
+    name: homes
 
 ---
 apiVersion: v1

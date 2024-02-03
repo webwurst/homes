@@ -9,6 +9,6 @@ resources:
 - ./repo-homes.yaml
 
 secretGenerator:
-- name: flux-webhook
+- name: homes-webhook
   files:
   - token=./repo-homes-webhook-secret
