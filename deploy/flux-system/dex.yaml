@@ -1,0 +1,40 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dex
+spec:
+  path: ./deploy/dex
+  dependsOn:
+  - name: dex-crds
+  - name: monitoring-crds
+  sourceRef:
+    kind: GitRepository
+    name: github-homes
+  interval: 1h0m
+  prune: true
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: dex-crds
+spec:
+  sourceRef:
+    kind: GitRepository
+    name: github-homes
+  path: ./deploy/dex/crds
+  prune: false
+  interval: 1h0m
+  patches:
+  - target:
+      kind: CustomResourceDefinition
+    patch: |-
+      - op: add
+        path: /metadata/labels
+        value:
+          kustomize.toolkit.fluxcd.io/prune: disabled
