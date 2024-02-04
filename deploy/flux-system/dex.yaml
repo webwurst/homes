@@ -11,7 +11,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: homes
-  interval: 1h0m
+  interval: 10m0s
   prune: true
   decryption:
     provider: sops
@@ -29,7 +29,7 @@ spec:
     name: homes
   path: ./deploy/dex/crds
   prune: false
-  interval: 1h0m
+  interval: 10m0s
   patches:
   - target:
       kind: CustomResourceDefinition

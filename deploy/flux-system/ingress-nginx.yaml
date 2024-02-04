@@ -10,7 +10,7 @@ spec:
     name: homes
   path: ./deploy/ingress-nginx
   prune: true
-  interval: 1h
+  interval: 10m0s
   decryption:
     provider: sops
     secretRef:

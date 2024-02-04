@@ -11,7 +11,7 @@ spec:
     name: homes
   path: ./deploy/monitoring
   prune: true
-  interval: 1h
+  interval: 10m0s
   decryption:
     provider: sops
     secretRef:
@@ -28,7 +28,7 @@ spec:
     name: homes
   path: ./deploy/monitoring/crds
   prune: false
-  interval: 1h0m
+  interval: 10m0s
   patches:
   - target:
       kind: CustomResourceDefinition

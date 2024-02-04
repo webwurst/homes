@@ -8,7 +8,7 @@ spec:
     name: homes
   path: ./deploy/local-path-storage
   prune: true
-  interval: 1h
+  interval: 10m0s
   decryption:
     provider: sops
     secretRef:
