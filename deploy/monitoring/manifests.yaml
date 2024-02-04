@@ -4,6 +4,11 @@ kind: Namespace
 metadata:
   name: monitoring
 
+  labels:
+    # FIXME {"level":"info","ts":"2024-02-04T13:41:26.650Z","logger":"runtime","msg":"would violate PodSecurity \"restricted:latest\": host namespaces (hostNetwork=true, hostPID=true), allowPrivilegeEscalation != false (container \"node-exporter\" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container \"node-exporter\" must set securityContext.capabilities.drop=[\"ALL\"]), restricted volume types (volumes \"proc\", \"sys\", \"root\" use restricted volume type \"hostPath\"), seccompProfile (pod or container \"node-exporter\" must set securityContext.seccompProfile.type to \"RuntimeDefault\" or \"Localhost\")"}
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce-version: latest
+
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
