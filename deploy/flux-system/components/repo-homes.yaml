@@ -4,7 +4,7 @@ kind: GitRepository
 metadata:
   name: homes
 spec:
-  interval: 15m0s
+  interval: 10m0s
   url: https://github.com/webwurst/homes.git
   ref:
     branch: main
