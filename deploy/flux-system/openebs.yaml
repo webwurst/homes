@@ -9,7 +9,7 @@ spec:
   # - name: monitoring-crds
   sourceRef:
     kind: GitRepository
-    name: github-homes
+    name: homes
   path: ./deploy/openebs
   prune: true
   interval: 1h
@@ -26,7 +26,7 @@ metadata:
 spec:
   sourceRef:
     kind: GitRepository
-    name: github-homes
+    name: homes
   path: ./deploy/openebs/crds
   prune: false
   interval: 1h0m

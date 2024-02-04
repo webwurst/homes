@@ -7,7 +7,7 @@ spec:
   - name: monitoring-crds
   sourceRef:
     kind: GitRepository
-    name: github-homes
+    name: homes
   path: ./deploy/ingress-nginx
   prune: true
   interval: 1h

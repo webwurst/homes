@@ -5,7 +5,7 @@ metadata:
 spec:
   sourceRef:
     kind: GitRepository
-    name: github-homes
+    name: homes
   path: ./deploy/local-path-storage
   prune: true
   interval: 1h

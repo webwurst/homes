@@ -8,7 +8,7 @@ spec:
   - name: monitoring-crds
   sourceRef:
     kind: GitRepository
-    name: github-homes
+    name: homes
   path: ./deploy/monitoring
   prune: true
   interval: 1h
@@ -25,7 +25,7 @@ metadata:
 spec:
   sourceRef:
     kind: GitRepository
-    name: github-homes
+    name: homes
   path: ./deploy/monitoring/crds
   prune: false
   interval: 1h0m
