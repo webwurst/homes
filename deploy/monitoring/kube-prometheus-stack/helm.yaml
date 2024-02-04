@@ -87,7 +87,7 @@ spec:
     kubeStateMetrics:
       enabled: true
     nodeExporter:
-      enabled: false  # FIXME would violate PodSecurity "restricted:latest"
+      enabled: true
     coreDns:
       enabled: true
       service:
@@ -123,6 +123,7 @@ spec:
       enabled: false
     kubeScheduler:
       enabled: false
+
     prometheus:
       enabled: false
     thanosRuler:
