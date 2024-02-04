@@ -143,9 +143,9 @@ spec:
         # https://dexidp.io/docs/custom-scopes-claims-clients/#scopes
         # for refresh token: offline_access
         scopes: openid email profile groups offline_access
-        # scopes: openid profile email offline_access account
 
-        # team_ids:
-        # role_attribute_path: contains(groups[*], `SRE`) && 'Admin' || contains(groups[*], `devops`) && 'Admin' || 'Editor'
-
-        # "{{ if (and .Values.ingress.enabled .Values.ingress.hosts) }}{{ .Values.ingress.hosts | first }}{{ else }}''{{ end }}"
+        role_attribute_path: >
+          contains(groups[*], `webwur-st:grafana-admin`) && 'GrafanaAdmin' || 
+          contains(groups[*], `webwur-st:grafana-admin`) && 'Admin' || 
+          contains(groups[*], `webwur-st:grafana-editor`) && 'Editor' ||
+          contains(groups[*], `webwur-st:grafana-viewer`) && 'Viewer'
