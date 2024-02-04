@@ -57,7 +57,7 @@ spec:
       webhook:
         image:
           repository: ghcr.io/mrueg/external-dns-netcup-webhook
-          tag: 0.0.7
+          tag: 0.0.6
         # FIXME remove "-" on upstream chart
         # https://github.com/kubernetes-sigs/external-dns/blob/master/charts/external-dns/templates/deployment.yaml#L147
         args:
