@@ -20,11 +20,11 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: flux-dashboard
+  name: flux-ui
 spec:
-  secretName: flux-dashboard-cert
+  secretName: flux-ui-cert
   dnsNames:
-  - flux.m.elmonitor.de
+  - flux.webwur.st
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt-cluster-issuer
