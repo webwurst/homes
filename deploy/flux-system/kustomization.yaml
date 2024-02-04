@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: flux-system
 resources:
 - ./components
+- ./ui
 - ./cert-manager.yaml
 - ./dex.yaml
 - ./external-dns.yaml
