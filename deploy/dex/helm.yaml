@@ -60,7 +60,7 @@ spec:
           loadAllGroups: false
           teamNameField: slug
           orgs:
-          - name: webwurst
+          - name: webwur.st
             # Allow-list of teams to read for the groups scope -> ["<orgs-name>:<team-name>"]
             teams:
             - grafana-admin
