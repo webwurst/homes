@@ -77,8 +77,7 @@ spec:
       createClusterRole: false
       createSecret: true
       username: admin
-      # FIXME still put this in ./helm-secrets.yaml
-      passwordHash: ""
+      # for `passwordHash` see ./helm-secrets.yaml
 
     ingress:
       enabled: true
