@@ -31,11 +31,11 @@ spec:
         secretKeyRef:
           name: oidc-secrets
           key: grafana-client-secret
-    - name: FLUX_DASHBOARD_CLIENT_SECRET
+    - name: FLUX_UI_CLIENT_SECRET
       valueFrom:
         secretKeyRef:
           name: oidc-secrets
-          key: flux-dashboard-client-secret
+          key: flux-ui-client-secret
 
     config:
       # example config https://github.com/dexidp/dex/blob/master/examples/config-dev.yaml
