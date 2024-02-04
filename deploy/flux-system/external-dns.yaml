@@ -8,7 +8,7 @@ spec:
   # - name: gateway-crds  # FIXME
   sourceRef:
     kind: GitRepository
-    name: omes
+    name: homes
   path: ./deploy/external-dns
   prune: true
   interval: 10m0s
