@@ -25,7 +25,6 @@ apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Receiver
 metadata:
   name: homes
-  namespace: flux-system
 spec:
   type: github
   events:
