@@ -145,7 +145,7 @@ spec:
         scopes: openid email profile groups offline_access
 
         role_attribute_path: >
-          contains(groups[*], `webwur-st:grafana-admin`) && 'GrafanaAdmin' || 
-          contains(groups[*], `webwur-st:grafana-admin`) && 'Admin' || 
-          contains(groups[*], `webwur-st:grafana-editor`) && 'Editor' ||
-          contains(groups[*], `webwur-st:grafana-viewer`) && 'Viewer'
+          contains(groups[*], 'webwur-st:grafana-admin') && 'GrafanaAdmin' ||
+          contains(groups[*], 'webwur-st:grafana-admin') && 'Admin' ||
+          contains(groups[*], 'webwur-st:grafana-editor') && 'Editor' ||
+          contains(groups[*], 'webwur-st:grafana-viewer') && 'Viewer'
