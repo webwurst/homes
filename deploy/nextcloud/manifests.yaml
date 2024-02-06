@@ -10,7 +10,7 @@ kind: HelmRepository
 metadata:
   name: nextcloud
 spec:
-  interval: 1h
+  interval: 1h0m
   url: https://nextcloud.github.io/helm/
 
 ---

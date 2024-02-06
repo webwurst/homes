@@ -6,10 +6,10 @@ configurations:
 
 namespace: nextcloud
 resources:
-- manifests.yaml
-- helm.yaml
+- ./manifests.yaml
+- ./helm.yaml
 
 secretGenerator:
 - name: nextcloud-helm-secrets
   files:
-  - values.yaml=helm-secrets.yaml
+  - values.yaml=./helm-secrets.yaml
