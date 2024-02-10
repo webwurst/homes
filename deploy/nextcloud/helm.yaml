@@ -66,8 +66,8 @@ spec:
         hosts:
         - nextcloud.webwur.st
   
-    # phpClientHttpsFix:
-    #   enabled: false
+    phpClientHttpsFix:
+      enabled: true
     #   protocol: https
 
     nextcloud:
@@ -78,8 +78,8 @@ spec:
       # some tries to fix http issue
       # from https://github.com/nextcloud/docker/issues/1672#issuecomment-1080467468
       extraEnv:
-      - name: OVERWRITEPROTOCOL
-        value: https
+      # - name: OVERWRITEPROTOCOL
+      #   value: https
       - name: TRUSTED_PROXIES
         value: "127.0.0.1 10.0.0.0/8"
       # - name: OVERWRITECLIURL
