@@ -77,15 +77,15 @@ spec:
 
       # some tries to fix http issue
       # from https://github.com/nextcloud/docker/issues/1672#issuecomment-1080467468
-      # extraEnv:
+      extraEnv:
       #  - name: OVERWRITEPROTOCOL
       #    value: https
       #  - name: OVERWRITECLIURL
       #    value: https://nextcloud.webwur.st
       #  - name: OVERWRITECONDADDR
       #    value: ""
-      #  - name: TRUSTED_PROXIES
-      #    value: "127.0.0.1 10.0.0.0/8"
+      - name: TRUSTED_PROXIES
+        value: "127.0.0.1 10.0.0.0/8"
 
 
       # PHP Configuration files
