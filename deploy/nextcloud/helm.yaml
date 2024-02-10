@@ -23,8 +23,12 @@ spec:
   values:
     # for defaults see https://github.com/nextcloud/helm/blob/main/charts/nextcloud/values.yaml
 
-    # image:
-    #   tag: 24.0.3-apache
+    image:
+      # tag: 24.0.3-apache
+      flavor: fpm
+
+    nginx:
+      enabled: true
 
     ingress:
       enabled: true
