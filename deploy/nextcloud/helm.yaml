@@ -23,12 +23,12 @@ spec:
   values:
     # for defaults see https://github.com/nextcloud/helm/blob/main/charts/nextcloud/values.yaml
 
-    image:
-      # tag: 24.0.3-apache
-      flavor: fpm
+    # image:
+    #   # tag: 24.0.3-apache
+    #   flavor: fpm
 
-    nginx:
-      enabled: true
+    # nginx:
+    #   enabled: true
 
     ingress:
       enabled: true
@@ -80,6 +80,9 @@ spec:
       extraEnv:
       - name: TRUSTED_PROXIES
         value: "127.0.0.1 10.0.0.0/8"
+      - name: APACHE_DISABLE_REWRITE_IP
+        value: "1"
+
       # - name: OVERWRITEPROTOCOL
       #   value: https
       # - name: OVERWRITECLIURL
