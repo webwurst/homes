@@ -71,9 +71,13 @@ spec:
       # username: admin
       # for `password` see ./helm-secrets.yaml
 
+      # some tries to fix http issue
+      # from https://github.com/nextcloud/docker/issues/1672#issuecomment-1080467468
       extraEnv:
        - name: OVERWRITEPROTOCOL
          value: https
+       - name: OVERWRITECLIURL
+         value: https://nextcloud.webwur.st
 
       # PHP Configuration files
       # Will be injected in /usr/local/etc/php/conf.d for apache image and in /usr/local/etc/php-fpm.d when nginx.enabled: true
