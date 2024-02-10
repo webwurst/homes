@@ -45,10 +45,10 @@ spec:
           rewrite ^/.well-known/host-meta /public.php?service=host-meta last;
           rewrite ^/.well-known/host-meta.json /public.php?service=host-meta-json;
           location = /.well-known/carddav {
-            return 301 $scheme://$host/remote.php/dav;
+            return 301 https://$host/remote.php/dav;
           }
           location = /.well-known/caldav {
-            return 301 $scheme://$host/remote.php/dav;
+            return 301 https://$host/remote.php/dav;
           }
           location = /robots.txt {
             allow all;
@@ -80,12 +80,12 @@ spec:
       extraEnv:
       - name: OVERWRITEPROTOCOL
         value: https
-      #  - name: OVERWRITECLIURL
-      #    value: https://nextcloud.webwur.st
-      #  - name: OVERWRITECONDADDR
-      #    value: ""
       - name: TRUSTED_PROXIES
         value: "127.0.0.1 10.0.0.0/8"
+      # - name: OVERWRITECLIURL
+      #   value: https://nextcloud.webwur.st
+      # - name: OVERWRITECONDADDR
+      #   value: ""
 
 
       # PHP Configuration files
