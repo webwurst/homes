@@ -43,20 +43,22 @@ spec:
       # defaultConfigs:
 
       # Extra config files created in /var/www/html/config/
-      configs:
-        # default configs in container https://github.com/nextcloud/docker/tree/master/28/apache/config
-        # from helm chart https://github.com/nextcloud/helm/blob/main/charts/nextcloud/templates/config.yaml
-        #
-        # https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html
+      # configs:
+      #   # default configs in container https://github.com/nextcloud/docker/tree/master/28/apache/config
+      #   # from helm chart https://github.com/nextcloud/helm/blob/main/charts/nextcloud/templates/config.yaml
+      #   #
+      #   # https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html
 
-        extra.config.php: |
-          <?php
-          $CONFIG = array (
-            'trusted_proxies' => ['10.0.0.0/8'],
-            'overwriteprotocol' => 'https',
-            // 'config_is_read_only' => false,
-            // 'loglevel' => 2,
-          );
+      #   extra.config.php: |
+      #     <?php
+      #     $CONFIG = array (
+      #       'trusted_proxies' => ['10.0.0.0/8'],
+      #       'overwriteprotocol' => 'https',
+      #       'loglevel' => 5,
+      #     );
+
+        # // 'config_is_read_only' => false,
+        # // 'loglevel' => 2,
 
     ingress:
       enabled: true
