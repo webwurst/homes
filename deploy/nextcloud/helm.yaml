@@ -40,7 +40,7 @@ spec:
       # Default config files
       # IMPORTANT: Will be used only if you put extra configs, otherwise default will come from nextcloud itself
       # Default confgurations can be found here: https://github.com/nextcloud/docker/tree/master/16.0/apache/config
-      defaultConfigs:
+      # defaultConfigs:
 
       # Extra config files created in /var/www/html/config/
       configs:
@@ -52,7 +52,10 @@ spec:
         extra.config.php: |
           <?php
           $CONFIG = array (
+            'trusted_proxies' => ['10.0.0.0/8'],
             'overwriteprotocol' => 'https',
+            # 'config_is_read_only' => false,
+            # 'loglevel' => 2,
           );
 
     ingress:
