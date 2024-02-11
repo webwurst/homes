@@ -58,8 +58,25 @@ spec:
             'loglevel' => 5,
           );
 
-        # // 'config_is_read_only' => false,
+        # // 'config_is_read_only' => true,
         # // 'loglevel' => 2,
+
+        extraInitContainers:
+        - name: chown-config
+          image: alpine
+          command:
+          - /bin/sh
+          - -c
+          - | 
+            chown -R www-data:www-data /data ;
+            find /data -type d -exec chmod 750 {} ;
+            find /data -type f -exec chmod 640 {} ;
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+          - name: nextcloud-main
+            mountPath: /var/www/html/config
+            subPath: config
 
     ingress:
       enabled: true
