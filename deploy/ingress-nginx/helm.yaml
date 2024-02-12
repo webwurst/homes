@@ -19,6 +19,9 @@ spec:
     controller:
       kind: DaemonSet
 
+      config:
+        allow-snippet-annotations: "true"
+
       tolerations:
       - key: dedicated
         operator: Equal
