@@ -19,8 +19,7 @@ spec:
     controller:
       kind: DaemonSet
 
-      config:
-        allow-snippet-annotations: "true"
+      allowSnippetAnnotations: true
 
       tolerations:
       - key: dedicated
