@@ -67,10 +67,7 @@ spec:
         command:
         - /bin/sh
         - -c
-        - | 
-          chown -R 33:33 /var/www/html/config ;
-          find /var/www/html/config -type d -exec chmod 750 {} ;
-          find /var/www/html/config -type f -exec chmod 640 {} ;
+        - chown -R 33:33 /var/www/html/config
         securityContext:
           runAsUser: 0
         volumeMounts:
