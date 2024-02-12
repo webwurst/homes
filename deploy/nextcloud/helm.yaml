@@ -40,8 +40,8 @@ spec:
       # Default config files
       # IMPORTANT: Will be used only if you put extra configs, otherwise default will come from nextcloud itself
       # Default confgurations can be found here: https://github.com/nextcloud/docker/tree/master/16.0/apache/config
-      defaultConfigs:
-        .htaccess:
+      # defaultConfigs:
+      #   .htaccess:
 
       # Extra config files created in /var/www/html/config/
       configs:
@@ -56,6 +56,7 @@ spec:
             'trusted_proxies' => ['10.0.0.0/8'],
             'overwriteprotocol' => 'https',
             'maintenance_window_start' => 3,
+            'default_phone_region' => 'DE',
             'loglevel' => 5,
           );
 
@@ -154,7 +155,7 @@ spec:
 
     cronjob:
       enabled: true
-      
+
     persistence:
       # Nextcloud Data (/var/www/html)
       enabled: true
