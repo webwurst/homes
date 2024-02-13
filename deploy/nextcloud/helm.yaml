@@ -67,7 +67,7 @@ spec:
             'trusted_proxies' => ['10.0.0.0/8'],
 
             'overwriteprotocol' => 'https',
-            'overwritehost' => 'webwur.st',
+            'overwritehost' => 'nextcloud.webwur.st',
             'overwritewebroot' => '/',
             'overwritecondaddr' => '^10\..*\..*\..*$',
             'overwrite.cli.url' => 'https://nextcloud.webwur.st',
