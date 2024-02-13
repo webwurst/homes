@@ -50,11 +50,28 @@ spec:
         #
         # https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html
 
+        # https://help.nextcloud.com/t/some-http-links-not-rewritten-to-https-despite-overwriteprotocol-https/74192/14
+        #
+        # Nothing above worked for me.
+        # So, I found that I can hard-code it to use HTTPS
+        #
+        # Edit html\custom_apps\richdocumentscode\proxy.php
+        # And on line 2 add this:
+        # $_SERVER['HTTPS']='on';
+        #
+        # Basically, Nextcloud can’t correctly determine HTTPS requests and by doing $_SERVER['HTTPS']='on'; you are telling it to stop guessing…
+
         extra.config.php: |
           <?php
           $CONFIG = array (
             'trusted_proxies' => ['10.0.0.0/8'],
+
             'overwriteprotocol' => 'https',
+            'overwritehost' => 'webwur.st',
+            'overwritewebroot' => '/',
+            'overwritecondaddr' => '^10\..*\..*\..*$',
+            'overwrite.cli.url' => 'https://nextcloud.webwur.st',
+
             'maintenance_window_start' => 3,
             'default_phone_region' => 'DE',
             'loglevel' => 5,
