@@ -38,6 +38,10 @@ spec:
       backupStorageLocation:
       - provider: aws
         bucket: velero-bonpland
+        credential:
+          name: backblaze-velero-bonpland-bucket
+          key: aws-credentials
+
         config:
           region: backblaze
       volumeSnapshotLocation:
