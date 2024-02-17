@@ -35,6 +35,10 @@ spec:
         name: plugins
 
     configuration:
+      features: EnableCSI
+      # default: 1m
+      backupSyncPeriod: 10m0s
+
       backupStorageLocation:
       - provider: aws
         bucket: velero-bonpland
@@ -42,11 +46,10 @@ spec:
           s3Url: https://s3.eu-central-003.backblazeb2.com
           region: eu-central
           s3ForcePathStyle: true
+
       volumeSnapshotLocation:
       - provider: aws
 
-      # default: 1m
-      backupSyncPeriod: 10m0s
 
     credentials:
       existingSecret: backblaze-velero-bonpland-bucket
