@@ -37,7 +37,8 @@ spec:
     configuration:
       features: EnableCSI
       # default: 1m
-      backupSyncPeriod: 10m0s
+      # backupSyncPeriod: 10m0s
+      backupSyncPeriod: 10m
 
       backupStorageLocation:
       - provider: aws
