@@ -10,7 +10,7 @@ secretGenerator:
 - name: backblaze-velero-bonpland-bucket
   files:
   # https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
-  - aws-credentials=./backblaze-velero-bonpland-bucket-secret
+  - cloud=./backblaze-velero-bonpland-bucket-secret
 # - name: velero-repo-credentials
 #   files:
 #   - repository-password=./kopia-repo-secret
