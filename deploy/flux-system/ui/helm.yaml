@@ -29,6 +29,13 @@ spec:
   values:
     # https://github.com/weaveworks/weave-gitops/blob/main/charts/gitops-server/values.yaml
 
+    # envVars:
+    # - name: WEAVE_GITOPS_FEATURE_OIDC_BUTTON_LABEL
+    #   value: "Login with ACME"
+
+    additionalArgs:
+    - --auth-methods=oidc
+
     # Should the 'oidc-auth' secret be created. For a detailed
     # explanation of these attributes please see our documentation:
     # https://docs.gitops.weave.works/docs/configuration/securing-access-to-the-dashboard/#login-via-an-oidc-provider
@@ -69,8 +76,9 @@ spec:
 
 
     # FIXME find out about mapping to admin-group over oidc instead..
+    # https://docs.gitops.weave.works/docs/configuration/emergency-user/
     adminUser:
-      create: true
+      create: false
       # -- Specifies whether the clusterRole & binding to the admin user should be created.
       # Will be created only if `adminUser.create` is enabled. Without this,
       # the adminUser will only be able to see resources in the target namespace.
