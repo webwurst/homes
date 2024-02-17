@@ -45,6 +45,9 @@ spec:
       volumeSnapshotLocation:
       - provider: aws
 
+      # default: 1m
+      backupSyncPeriod: 10m0s
+
     credentials:
       existingSecret: backblaze-velero-bonpland-bucket
 
