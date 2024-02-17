@@ -2,23 +2,25 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
+  labels:
+    component: velero
   annotations:
     controller-gen.kubebuilder.io/version: v0.12.0
-  name: restores.velero.io
+  name: backups.velero.io
 spec:
   group: velero.io
   names:
-    kind: Restore
-    listKind: RestoreList
-    plural: restores
-    singular: restore
+    kind: Backup
+    listKind: BackupList
+    plural: backups
+    singular: backup
   scope: Namespaced
   versions:
   - name: v1
     schema:
       openAPIV3Schema:
-        description: Restore is a Velero resource that represents the application
-          of resources from a Velero backup to a target Kubernetes cluster.
+        description: Backup is a Velero resource that represents the capture of Kubernetes
+          cluster state at a point in time (API objects and associated volume state).
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -33,38 +35,71 @@ spec:
           metadata:
             type: object
           spec:
-            description: RestoreSpec defines the specification for a Velero restore.
+            description: BackupSpec defines the specification for a Velero backup.
             properties:
-              backupName:
-                description: BackupName is the unique name of the Velero backup to
-                  restore from.
+              csiSnapshotTimeout:
+                description: CSISnapshotTimeout specifies the time used to wait for
+                  CSI VolumeSnapshot status turns to ReadyToUse during creation, before
+                  returning error as timeout. The default value is 10 minute.
                 type: string
+              datamover:
+                description: DataMover specifies the data mover to be used by the
+                  backup. If DataMover is "" or "velero", the built-in data mover
+                  will be used.
+                type: string
+              defaultVolumesToFsBackup:
+                description: DefaultVolumesToFsBackup specifies whether pod volume
+                  file system backup should be used for all volumes by default.
+                nullable: true
+                type: boolean
+              defaultVolumesToRestic:
+                description: "DefaultVolumesToRestic specifies whether restic should
+                  be used to take a backup of all pod volumes by default. \n Deprecated:
+                  this field is no longer used and will be removed entirely in future.
+                  Use DefaultVolumesToFsBackup instead."
+                nullable: true
+                type: boolean
+              excludedClusterScopedResources:
+                description: ExcludedClusterScopedResources is a slice of cluster-scoped
+                  resource type names to exclude from the backup. If set to "*", all
+                  cluster-scoped resource types are excluded. The default value is
+                  empty.
+                items:
+                  type: string
+                nullable: true
+                type: array
+              excludedNamespaceScopedResources:
+                description: ExcludedNamespaceScopedResources is a slice of namespace-scoped
+                  resource type names to exclude from the backup. If set to "*", all
+                  namespace-scoped resource types are excluded. The default value
+                  is empty.
+                items:
+                  type: string
+                nullable: true
+                type: array
               excludedNamespaces:
                 description: ExcludedNamespaces contains a list of namespaces that
-                  are not included in the restore.
+                  are not included in the backup.
                 items:
                   type: string
                 nullable: true
                 type: array
               excludedResources:
                 description: ExcludedResources is a slice of resource names that are
-                  not included in the restore.
+                  not included in the backup.
                 items:
                   type: string
                 nullable: true
                 type: array
-              existingResourcePolicy:
-                description: ExistingResourcePolicy specifies the restore behavior
-                  for the Kubernetes resource to be restored
-                nullable: true
-                type: string
               hooks:
                 description: Hooks represent custom behaviors that should be executed
-                  during or post restore.
+                  at different phases of the backup.
                 properties:
                   resources:
+                    description: Resources are hooks that should be executed when
+                      backing up individual instances of a resource.
                     items:
-                      description: RestoreResourceHookSpec defines one or more RestoreResrouceHooks
+                      description: BackupResourceHookSpec defines one or more BackupResourceHooks
                         that should be executed based on the rules defined for namespaces,
                         resources, and label selector.
                       properties:
@@ -149,20 +184,20 @@ spec:
                         name:
                           description: Name is the name of this hook.
                           type: string
-                        postHooks:
-                          description: PostHooks is a list of RestoreResourceHooks
-                            to execute during and after restoring a resource.
+                        post:
+                          description: PostHooks is a list of BackupResourceHooks
+                            to execute after storing the item in the backup. These
+                            are executed after all "additional items" from item actions
+                            are processed.
                           items:
-                            description: RestoreResourceHook defines a restore hook
-                              for a resource.
+                            description: BackupResourceHook defines a hook for a resource.
                             properties:
                               exec:
-                                description: Exec defines an exec restore hook.
+                                description: Exec defines an exec hook.
                                 properties:
                                   command:
                                     description: Command is the command and arguments
-                                      to execute from within a container after a pod
-                                      has been restored.
+                                      to execute.
                                     items:
                                       type: string
                                     minItems: 1
@@ -173,10 +208,49 @@ spec:
                                       not specified, the pod's first container is
                                       used.
                                     type: string
-                                  execTimeout:
-                                    description: ExecTimeout defines the maximum amount
+                                  onError:
+                                    description: OnError specifies how Velero should
+                                      behave if it encounters an error executing this
+                                      hook.
+                                    enum:
+                                    - Continue
+                                    - Fail
+                                    type: string
+                                  timeout:
+                                    description: Timeout defines the maximum amount
                                       of time Velero should wait for the hook to complete
                                       before considering the execution a failure.
+                                    type: string
+                                required:
+                                - command
+                                type: object
+                            required:
+                            - exec
+                            type: object
+                          type: array
+                        pre:
+                          description: PreHooks is a list of BackupResourceHooks to
+                            execute prior to storing the item in the backup. These
+                            are executed before any "additional items" from item actions
+                            are processed.
+                          items:
+                            description: BackupResourceHook defines a hook for a resource.
+                            properties:
+                              exec:
+                                description: Exec defines an exec hook.
+                                properties:
+                                  command:
+                                    description: Command is the command and arguments
+                                      to execute.
+                                    items:
+                                      type: string
+                                    minItems: 1
+                                    type: array
+                                  container:
+                                    description: Container is the container in the
+                                      pod where the command should be executed. If
+                                      not specified, the pod's first container is
+                                      used.
                                     type: string
                                   onError:
                                     description: OnError specifies how Velero should
@@ -186,50 +260,46 @@ spec:
                                     - Continue
                                     - Fail
                                     type: string
-                                  waitForReady:
-                                    description: WaitForReady ensures command will
-                                      be launched when container is Ready instead
-                                      of Running.
-                                    nullable: true
-                                    type: boolean
-                                  waitTimeout:
-                                    description: WaitTimeout defines the maximum amount
-                                      of time Velero should wait for the container
-                                      to be Ready before attempting to run the command.
+                                  timeout:
+                                    description: Timeout defines the maximum amount
+                                      of time Velero should wait for the hook to complete
+                                      before considering the execution a failure.
                                     type: string
                                 required:
                                 - command
                                 type: object
-                              init:
-                                description: Init defines an init restore hook.
-                                properties:
-                                  initContainers:
-                                    description: InitContainers is list of init containers
-                                      to be added to a pod during its restore.
-                                    items:
-                                      type: object
-                                      x-kubernetes-preserve-unknown-fields: true
-                                    type: array
-                                    x-kubernetes-preserve-unknown-fields: true
-                                  timeout:
-                                    description: Timeout defines the maximum amount
-                                      of time Velero should wait for the initContainers
-                                      to complete.
-                                    type: string
-                                type: object
+                            required:
+                            - exec
                             type: object
                           type: array
                       required:
                       - name
                       type: object
+                    nullable: true
                     type: array
                 type: object
               includeClusterResources:
                 description: IncludeClusterResources specifies whether cluster-scoped
-                  resources should be included for consideration in the restore. If
-                  null, defaults to true.
+                  resources should be included for consideration in the backup.
                 nullable: true
                 type: boolean
+              includedClusterScopedResources:
+                description: IncludedClusterScopedResources is a slice of cluster-scoped
+                  resource type names to include in the backup. If set to "*", all
+                  cluster-scoped resource types are included. The default value is
+                  empty, which means only related cluster-scoped resources are included.
+                items:
+                  type: string
+                nullable: true
+                type: array
+              includedNamespaceScopedResources:
+                description: IncludedNamespaceScopedResources is a slice of namespace-scoped
+                  resource type names to include in the backup. The default value
+                  is "*".
+                items:
+                  type: string
+                nullable: true
+                type: array
               includedNamespaces:
                 description: IncludedNamespaces is a slice of namespace names to include
                   objects from. If empty, all namespaces are included.
@@ -239,19 +309,20 @@ spec:
                 type: array
               includedResources:
                 description: IncludedResources is a slice of resource names to include
-                  in the restore. If empty, all resources in the backup are included.
+                  in the backup. If empty, all resources are included.
                 items:
                   type: string
                 nullable: true
                 type: array
               itemOperationTimeout:
                 description: ItemOperationTimeout specifies the time used to wait
-                  for RestoreItemAction operations The default value is 1 hour.
+                  for asynchronous BackupItemAction operations The default value is
+                  1 hour.
                 type: string
               labelSelector:
                 description: LabelSelector is a metav1.LabelSelector to filter with
-                  when restoring individual objects from the backup. If empty or nil,
-                  all objects are included. Optional.
+                  when adding individual objects to the backup. If empty or nil, all
+                  objects are included. Optional.
                 nullable: true
                 properties:
                   matchExpressions:
@@ -296,20 +367,19 @@ spec:
                     type: object
                 type: object
                 x-kubernetes-map-type: atomic
-              namespaceMapping:
-                additionalProperties:
-                  type: string
-                description: NamespaceMapping is a map of source namespace names to
-                  target namespace names to restore into. Any source namespaces not
-                  included in the map will be restored into namespaces of the same
-                  name.
+              metadata:
+                properties:
+                  labels:
+                    additionalProperties:
+                      type: string
+                    type: object
                 type: object
               orLabelSelectors:
                 description: OrLabelSelectors is list of metav1.LabelSelector to filter
-                  with when restoring individual objects from the backup. If multiple
-                  provided they will be joined by the OR operator. LabelSelector as
-                  well as OrLabelSelectors cannot co-exist in restore request, only
-                  one of them can be used
+                  with when adding individual objects to the backup. If multiple provided
+                  they will be joined by the OR operator. LabelSelector as well as
+                  OrLabelSelectors cannot co-exist in backup request, only one of
+                  them can be used.
                 items:
                   description: A label selector is a label query over a set of resources.
                     The result of matchLabels and matchExpressions are ANDed. An empty
@@ -360,15 +430,19 @@ spec:
                   x-kubernetes-map-type: atomic
                 nullable: true
                 type: array
-              preserveNodePorts:
-                description: PreserveNodePorts specifies whether to restore old nodePorts
-                  from backup.
+              orderedResources:
+                additionalProperties:
+                  type: string
+                description: OrderedResources specifies the backup order of resources
+                  of specific Kind. The map key is the resource name and value is
+                  a list of object names separated by commas. Each resource name has
+                  format "namespace/objectname".  For cluster resources, simply use
+                  "objectname".
                 nullable: true
-                type: boolean
-              resourceModifier:
-                description: ResourceModifier specifies the reference to JSON resource
-                  patches that should be applied to resources before restoration.
-                nullable: true
+                type: object
+              resourcePolicy:
+                description: ResourcePolicy specifies the referenced resource policies
+                  that backup should follow
                 properties:
                   apiGroup:
                     description: APIGroup is the group for the resource being referenced.
@@ -387,68 +461,90 @@ spec:
                 - name
                 type: object
                 x-kubernetes-map-type: atomic
-              restorePVs:
-                description: RestorePVs specifies whether to restore all included
-                  PVs from snapshot
+              snapshotMoveData:
+                description: SnapshotMoveData specifies whether snapshot data should
+                  be moved
                 nullable: true
                 type: boolean
-              restoreStatus:
-                description: RestoreStatus specifies which resources we should restore
-                  the status field. If nil, no objects are included. Optional.
+              snapshotVolumes:
+                description: SnapshotVolumes specifies whether to take snapshots of
+                  any PV's referenced in the set of objects included in the Backup.
                 nullable: true
-                properties:
-                  excludedResources:
-                    description: ExcludedResources specifies the resources to which
-                      will not restore the status.
-                    items:
-                      type: string
-                    nullable: true
-                    type: array
-                  includedResources:
-                    description: IncludedResources specifies the resources to which
-                      will restore the status. If empty, it applies to all resources.
-                    items:
-                      type: string
-                    nullable: true
-                    type: array
-                type: object
-              scheduleName:
-                description: ScheduleName is the unique name of the Velero schedule
-                  to restore from. If specified, and BackupName is empty, Velero will
-                  restore from the most recent successful backup created from this
-                  schedule.
+                type: boolean
+              storageLocation:
+                description: StorageLocation is a string containing the name of a
+                  BackupStorageLocation where the backup should be stored.
+                type: string
+              ttl:
+                description: TTL is a time.Duration-parseable string describing how
+                  long the Backup should be retained for.
                 type: string
               uploaderConfig:
-                description: UploaderConfig specifies the configuration for the restore.
+                description: UploaderConfig specifies the configuration for the uploader.
                 nullable: true
                 properties:
-                  writeSparseFiles:
-                    description: WriteSparseFiles is a flag to indicate whether write
-                      files sparsely or not.
-                    nullable: true
-                    type: boolean
+                  parallelFilesUpload:
+                    description: ParallelFilesUpload is the number of files parallel
+                      uploads to perform when using the uploader.
+                    type: integer
                 type: object
-            required:
-            - backupName
+              volumeSnapshotLocations:
+                description: VolumeSnapshotLocations is a list containing names of
+                  VolumeSnapshotLocations associated with this backup.
+                items:
+                  type: string
+                type: array
             type: object
           status:
-            description: RestoreStatus captures the current status of a Velero restore
+            description: BackupStatus captures the current status of a Velero backup.
             properties:
+              backupItemOperationsAttempted:
+                description: BackupItemOperationsAttempted is the total number of
+                  attempted async BackupItemAction operations for this backup.
+                type: integer
+              backupItemOperationsCompleted:
+                description: BackupItemOperationsCompleted is the total number of
+                  successfully completed async BackupItemAction operations for this
+                  backup.
+                type: integer
+              backupItemOperationsFailed:
+                description: BackupItemOperationsFailed is the total number of async
+                  BackupItemAction operations for this backup which ended with an
+                  error.
+                type: integer
               completionTimestamp:
-                description: CompletionTimestamp records the time the restore operation
-                  was completed. Completion time is recorded even on failed restore.
-                  The server's time is used for StartTimestamps
+                description: CompletionTimestamp records the time a backup was completed.
+                  Completion time is recorded even on failed backups. Completion time
+                  is recorded before uploading the backup object. The server's time
+                  is used for CompletionTimestamps
                 format: date-time
                 nullable: true
                 type: string
+              csiVolumeSnapshotsAttempted:
+                description: CSIVolumeSnapshotsAttempted is the total number of attempted
+                  CSI VolumeSnapshots for this backup.
+                type: integer
+              csiVolumeSnapshotsCompleted:
+                description: CSIVolumeSnapshotsCompleted is the total number of successfully
+                  completed CSI VolumeSnapshots for this backup.
+                type: integer
               errors:
                 description: Errors is a count of all error messages that were generated
-                  during execution of the restore. The actual errors are stored in
-                  object storage.
+                  during execution of the backup.  The actual errors are in the backup's
+                  log file in object storage.
                 type: integer
+              expiration:
+                description: Expiration is when this Backup is eligible for garbage-collection.
+                format: date-time
+                nullable: true
+                type: string
               failureReason:
-                description: FailureReason is an error that caused the entire restore
+                description: FailureReason is an error that caused the entire backup
                   to fail.
+                type: string
+              formatVersion:
+                description: FormatVersion is the backup format version, including
+                  major, minor, and patch version.
                 type: string
               hookStatus:
                 description: HookStatus contains information about the status of the
@@ -467,64 +563,68 @@ spec:
                     type: integer
                 type: object
               phase:
-                description: Phase is the current state of the Restore
+                description: Phase is the current state of the Backup.
                 enum:
                 - New
                 - FailedValidation
                 - InProgress
                 - WaitingForPluginOperations
                 - WaitingForPluginOperationsPartiallyFailed
+                - Finalizing
+                - FinalizingPartiallyFailed
                 - Completed
                 - PartiallyFailed
                 - Failed
+                - Deleting
                 type: string
               progress:
-                description: Progress contains information about the restore's execution
+                description: Progress contains information about the backup's execution
                   progress. Note that this information is best-effort only -- if Velero
-                  fails to update it during a restore for any reason, it may be inaccurate/stale.
+                  fails to update it during a backup for any reason, it may be inaccurate/stale.
                 nullable: true
                 properties:
-                  itemsRestored:
-                    description: ItemsRestored is the number of items that have actually
-                      been restored so far
+                  itemsBackedUp:
+                    description: ItemsBackedUp is the number of items that have actually
+                      been written to the backup tarball so far.
                     type: integer
                   totalItems:
-                    description: TotalItems is the total number of items to be restored.
-                      This number may change throughout the execution of the restore
-                      due to plugins that return additional related items to restore
+                    description: TotalItems is the total number of items to be backed
+                      up. This number may change throughout the execution of the backup
+                      due to plugins that return additional related items to back
+                      up, the velero.io/exclude-from-backup label, and various other
+                      filters that happen as items are processed.
                     type: integer
                 type: object
-              restoreItemOperationsAttempted:
-                description: RestoreItemOperationsAttempted is the total number of
-                  attempted async RestoreItemAction operations for this restore.
-                type: integer
-              restoreItemOperationsCompleted:
-                description: RestoreItemOperationsCompleted is the total number of
-                  successfully completed async RestoreItemAction operations for this
-                  restore.
-                type: integer
-              restoreItemOperationsFailed:
-                description: RestoreItemOperationsFailed is the total number of async
-                  RestoreItemAction operations for this restore which ended with an
-                  error.
-                type: integer
               startTimestamp:
-                description: StartTimestamp records the time the restore operation
-                  was started. The server's time is used for StartTimestamps
+                description: StartTimestamp records the time a backup was started.
+                  Separate from CreationTimestamp, since that value changes on restores.
+                  The server's time is used for StartTimestamps
                 format: date-time
                 nullable: true
                 type: string
               validationErrors:
                 description: ValidationErrors is a slice of all validation errors
-                  (if applicable)
+                  (if applicable).
                 items:
                   type: string
                 nullable: true
                 type: array
+              version:
+                description: 'Version is the backup format major version. Deprecated:
+                  Please see FormatVersion'
+                type: integer
+              volumeSnapshotsAttempted:
+                description: VolumeSnapshotsAttempted is the total number of attempted
+                  volume snapshots for this backup.
+                type: integer
+              volumeSnapshotsCompleted:
+                description: VolumeSnapshotsCompleted is the total number of successfully
+                  completed volume snapshots for this backup.
+                type: integer
               warnings:
                 description: Warnings is a count of all warning messages that were
-                  generated during execution of the restore. The actual warnings are
-                  stored in object storage.
+                  generated during execution of the backup. The actual warnings are
+                  in the backup's log file in object storage.
                 type: integer
             type: object
         type: object
