@@ -38,6 +38,8 @@ spec:
       backupStorageLocation:
       - provider: aws
         bucket: velero-bonpland
+        config:
+          region: backblaze
       volumeSnapshotLocation:
       - provider: aws
 
