@@ -10,6 +10,8 @@ secretGenerator:
 - name: backblaze-velero-bonpland-bucket
   files:
   - cloud=./backblaze-velero-bonpland-bucket-secret
+  options:
+    disableNameSuffixHash: true
 - name: velero-repo-credentials
   files:
   - repository-password=./kopia-repo-secret
