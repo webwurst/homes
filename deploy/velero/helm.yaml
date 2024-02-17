@@ -51,11 +51,13 @@ spec:
     deployNodeAgent: true
     nodeAgent:
       podVolumePath: /var/lib/kubelet/pods
-      privileged: false
-      # Pod priority class name to use for the node-agent daemonset. Optional.
-      priorityClassName: ""
-      # Resource requests/limits to specify for the node-agent daemonset deployment. Optional.
-      # https://velero.io/docs/v1.6/customize-installation/#customize-resource-requests-and-limits
+      # priorityClassName: ""
+      tolerations:
+      - key: dedicated
+        operator: Equal
+        value: gateway
+        effect: NoSchedule
+
       resources:
         requests:
           cpu: 0.2
