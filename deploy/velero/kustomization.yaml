@@ -14,3 +14,5 @@ secretGenerator:
 # - name: velero-repo-credentials
 #   files:
 #   - repository-password=./kopia-repo-secret
+  options:
+    disableNameSuffixHash: true
