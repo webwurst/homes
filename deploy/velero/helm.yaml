@@ -36,9 +36,16 @@ spec:
 
     configuration:
       features: EnableCSI
+      uploaderType: kopia
       # default: 1m
       # backupSyncPeriod: 10m0s
       backupSyncPeriod: 10m
+      # Default: text. Other option: json.
+      # logFormat:
+      # Default: info. Other options: debug, warning, error, fatal, panic.
+      # logLevel:
+      # default: 1m
+      storeValidationFrequency: 10m0s
 
       backupStorageLocation:
       - provider: aws
