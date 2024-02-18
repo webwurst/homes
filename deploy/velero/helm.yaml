@@ -50,6 +50,7 @@ spec:
       clientQPS: 100
       clientBurst: 100      
 
+      # https://github.com/vmware-tanzu/velero-plugin-for-aws/blob/main/backupstoragelocation.md
       backupStorageLocation:
       - provider: aws
         bucket: velero-bonpland
@@ -58,13 +59,12 @@ spec:
           region: eu-central
           s3ForcePathStyle: true
 
+      # https://github.com/vmware-tanzu/velero-plugin-for-aws/blob/main/volumesnapshotlocation.md
       volumeSnapshotLocation:
       - provider: aws
         bucket: velero-bonpland
         config:
-          s3Url: https://s3.eu-central-003.backblazeb2.com
           region: eu-central
-          s3ForcePathStyle: true
 
     credentials:
       existingSecret: backblaze-velero-bonpland-bucket
