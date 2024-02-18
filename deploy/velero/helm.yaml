@@ -47,7 +47,6 @@ spec:
       # backupSyncPeriod:
 
       # see yet unreleased https://github.com/vmware-tanzu/velero/pull/7311/files
-      # default: 20.0
       clientQPS: 100
       clientBurst: 100      
 
@@ -61,7 +60,11 @@ spec:
 
       volumeSnapshotLocation:
       - provider: aws
-
+        bucket: velero-bonpland
+        config:
+          s3Url: https://s3.eu-central-003.backblazeb2.com
+          region: eu-central
+          s3ForcePathStyle: true
 
     credentials:
       existingSecret: backblaze-velero-bonpland-bucket
