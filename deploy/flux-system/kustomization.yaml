@@ -16,3 +16,4 @@ resources:
 - ./openebs.yaml
 # - ./libre-booking.yaml
 - ./velero.yaml
+- ./nfs-ganesha.yaml
