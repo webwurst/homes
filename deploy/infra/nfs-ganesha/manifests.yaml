@@ -1,0 +1,41 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: set-in-kustomization
+  # labels:
+  #   pod-security.kubernetes.io/enforce: privileged
+  #   pod-security.kubernetes.io/enforce-version: latest
+
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: nfs-ganesha-server-and-external-provisioner
+spec:
+  interval: 1h0m
+  url: https://kubernetes-sigs.github.io/nfs-ganesha-server-and-external-provisioner/
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: nfs-server-provisioner
+spec:
+  interval: 1h0m
+  # releaseName: nfs-server-provisioner
+  chart:
+    spec:
+      chart: nfs-server-provisioner
+      # https://artifacthub.io/packages/helm/nfs-ganesha-server-and-external-provisioner/nfs-server-provisioner
+      version: "~1.8.0"
+      sourceRef:
+        kind: HelmRepository
+        name: nfs-ganesha-server-and-external-provisioner
+  install:
+    crds: Skip
+  upgrade:
+    crds: Skip
+  valuesFrom:
+  - kind: ConfigMap
+    name: helm-values

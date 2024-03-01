@@ -1,0 +1,6 @@
+# for defaults see https://github.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner/blob/master/charts/nfs-server-provisioner/values.yaml
+
+persistence:
+  enabled: true
+  storageClass: local-path
+  size: 200Gi
