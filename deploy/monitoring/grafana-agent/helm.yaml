@@ -13,7 +13,7 @@ spec:
     spec:
       # https://artifacthub.io/packages/helm/grafana/grafana-agent
       chart: grafana-agent
-      version: "~0.31.1"
+      version: "~0.35.0"
       sourceRef:
         kind: HelmRepository
         name: grafana

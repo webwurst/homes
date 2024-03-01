@@ -9,7 +9,7 @@ spec:
     spec:
       chart: velero
       # https://artifacthub.io/packages/helm/vmware-tanzu/velero
-      version: "~5.3.0"
+      version: "~6.0.0"
       sourceRef:
         kind: HelmRepository
         name: vmware-tanzu
@@ -37,6 +37,8 @@ spec:
     configuration:
       features: EnableCSI
       uploaderType: kopia
+      # defaultVolumesToFsBackup: true
+
       # Default: text. Other option: json.
       # logFormat:
       # Default: info. Other options: debug, warning, error, fatal, panic.

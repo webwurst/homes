@@ -7,9 +7,9 @@ spec:
   chart:
     spec:
       chart: zfs-localpv
-      # https://github.com/nextcloud/all-in-one/releases
+      # https://github.com/openebs/zfs-localpv/tree/develop/deploy/helm/charts
       # $ helm repo add zfs-localpv https://openebs.github.io/zfs-localpv && helm search repo zfs-localpv --versions
-      version: "~2.4.0"
+      version: "~2.4.1"
       sourceRef:
         kind: HelmRepository
         name: zfs-localpv
@@ -26,3 +26,8 @@ spec:
 
     crd:
       enableInstall: false
+
+    # zfs:
+    #   # If you use a non-standard path to the zfs binary, specify it here
+    #   # bin: /run/current-system/sw/bin/zfs
+    #   bin: /usr/local/sbin/zfs

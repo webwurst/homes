@@ -9,12 +9,10 @@ spec:
     spec:
       chart: external-dns
       # https://artifacthub.io/packages/helm/external-dns/external-dns
-      version: "~1.14.1-patch1"
+      version: "~1.14.3"
       sourceRef:
         kind: HelmRepository
-        # name: external-dns
-        namespace: flux-system
-        name: homes
+        name: external-dns
   storageNamespace: flux-system
   install:
     crds: Skip

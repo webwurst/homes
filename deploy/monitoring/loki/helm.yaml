@@ -14,7 +14,7 @@ spec:
     spec:
       # https://artifacthub.io/packages/helm/grafana/loki
       chart: loki
-      version: "~5.42.2"
+      version: "~5.43.3"
       sourceRef:
         kind: HelmRepository
         name: grafana
@@ -65,7 +65,7 @@ spec:
       commonConfig:
         replication_factor: 1
       storage:
-        type: 'filesystem'      
+        type: filesystem
 
       auth_enabled: false
 
