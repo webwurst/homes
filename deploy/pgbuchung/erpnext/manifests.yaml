@@ -3,9 +3,16 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: set-in-kustomization
-  # labels:
-  #   pod-security.kubernetes.io/enforce: privileged
-  #   pod-security.kubernetes.io/enforce-version: latest
+  # - pods "erpnext-nginx-57864997fb-bccnf" is forbidden: violates PodSecurity "baseline:latest": non-default capabilities (container "nginx" must not include "CAP_CHOWN" in securityContext.capabilities.add)
+  # - pods "erpnext-gunicorn-8454568d6c-dv4nz" is forbidden: violates PodSecurity "baseline:latest": non-default capabilities (container "gunicorn" must not include "CAP_CHOWN" in securityContext.capabilities.add)
+  # - pods "erpnext-scheduler-7f94b4bcdd-z8ww8" is forbidden: violates PodSecurity "baseline:latest": non-default capabilities (container "scheduler" must not include "CAP_CHOWN" in securityContext.capabilities.add)
+  # - pods "erpnext-socketio-575bfd6ccc-7wps5" is forbidden: violates PodSecurity "baseline:latest": non-default capabilities (container "socketio" must not include "CAP_CHOWN" in securityContext.capabilities.add)
+  # - pods "erpnext-worker-d-67c66d5fb9-st2vq" is forbidden: violates PodSecurity "baseline:latest": non-default capabilities (container "default" must not include "CAP_CHOWN" in securityContext.capabilities.add)
+  # - pods "erpnext-worker-l-758c56df7d-4vzdq" is forbidden: violates PodSecurity "baseline:latest": non-default capabilities (container "long" must not include "CAP_CHOWN" in securityContext.capabilities.add)
+  # - pods "erpnext-worker-s-6f995f647d-j9ks6" is forbidden: violates PodSecurity "baseline:latest": non-default capabilities (container "short" must not include "CAP_CHOWN" in securityContext.capabilities.add)
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/enforce-version: latest
 
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
