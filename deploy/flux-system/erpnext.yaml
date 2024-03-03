@@ -4,6 +4,7 @@ metadata:
   name: erpnext
 spec:
   dependsOn:
+  # FIXME nfs-ganescha kustomization should somehow only succeed after nfs storageclass is available
   - name: nfs-ganesha
   - name: monitoring-crds
   sourceRef:
