@@ -4,3 +4,7 @@ persistence:
   enabled: true
   storageClass: local-path
   size: 200Gi
+
+storageClass:
+  mountOptions:
+  - vers=4.1

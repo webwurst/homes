@@ -6,8 +6,7 @@ configurations:
 
 namespace: nfs-ganesha
 resources:
-- manifests.yaml
-- helm.yaml
+- ./manifests.yaml
 
 configMapGenerator:
 - name: helm-values
