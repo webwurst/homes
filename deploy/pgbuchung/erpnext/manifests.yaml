@@ -40,7 +40,7 @@ spec:
   - kind: ConfigMap
     name: helm-values
   - kind: Secret
-    name: helm-values
+    name: helm-secrets
 
 ---
 apiVersion: cert-manager.io/v1
