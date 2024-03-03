@@ -17,3 +17,4 @@ resources:
 # - ./libre-booking.yaml
 - ./velero.yaml
 - ./nfs-ganesha.yaml
+- ./erpnext.yaml

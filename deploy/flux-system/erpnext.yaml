@@ -1,0 +1,18 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: erpnext
+spec:
+  dependsOn:
+  - name: nfs-ganesha
+  - name: monitoring-crds
+  sourceRef:
+    kind: GitRepository
+    name: homes
+  path: ./deploy/pgbuchung/erpnext
+  prune: true
+  interval: 10m0s
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age

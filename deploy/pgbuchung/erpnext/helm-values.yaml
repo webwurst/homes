@@ -1,0 +1,87 @@
+# for defaults see https://github.com/frappe/helm/blob/main/erpnext/values.yaml
+
+persistence:
+  worker:
+    storageClass: nfs
+
+ingress:
+  enabled: true
+  ingressName: erpnext
+  className: nginx
+  hosts:
+  - host: erpnext.webwur.st
+    paths:
+    - path: /
+      pathType: ImplementationSpecific
+  tls:
+  - secretName: erpnext-cert
+    hosts:
+    - erpnext.webwur.st
+
+# helm template frappe-bench -n erpnext frappe/erpnext -f custom-values.yaml -s templates/job-create-site.yaml > create-new-site-job.yaml
+jobs:
+
+  # Enable job to fix volume permissions, runs chown -R 1000:1000 on volumes
+  volumePermissions:
+    enabled: false
+
+  # Enable job to configure common site config with db host and port, socketio port and redis hosts.
+  configure:
+    enabled: true
+    # Enable initContainer to fix volume permission and set them to 1000:1000
+    fixVolume: true
+
+  # Enable job to create new site
+  createSite:
+    enabled: true
+    # Force create new site if site already exists.
+    # forceCreate: false
+    siteName: erpnext.webwur.st
+    # for `adminPassword` see ./helm-secrets.yaml
+    installApps:
+    - erpnext
+    dbType: mariadb
+    # Site creation job backoff limit.
+    backoffLimit: 0
+    # resources: {}
+    # nodeSelector: {}
+    # tolerations: []
+    # affinity: {}
+
+
+  # use velero instead.
+  # backup:
+  #   enabled: true
+  #   siteName: erpnext.webwur.st
+  #   withFiles: true
+  #   push:
+  #     enabled: false
+  #     bucket: "erpnext"
+  #     region: "us-east-1"
+  #     accessKey: "ACCESSKEY"
+  #     secretKey: "SECRETKEY"
+  #     endpoint: http://store.storage.svc.cluster.local
+
+redis-cache:
+  enabled: true
+  architecture: standalone
+
+redis-queue:
+  enabled: true
+  architecture: standalone
+
+mariadb:
+  # for defaults see https://github.com/bitnami/charts/tree/master/bitnami/mariadb
+  enabled: true
+  auth:
+    username: erpnext
+    # for `rootPassword`, `password`, `replicationPassword` see ./helm-secrets.yaml
+  primary:
+    service:
+      ports:
+        mysql: 3306
+    extraFlags: >-
+      --skip-character-set-client-handshake
+      --skip-innodb-read-only-compressed
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
