@@ -7,7 +7,6 @@ configurations:
 namespace: erpnext
 resources:
 - ./manifests.yaml
-- ./helm.yaml
 
 configMapGenerator:
 - name: helm-values
