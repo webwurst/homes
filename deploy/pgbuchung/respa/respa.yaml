@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
       - name: pg-isready
-        image: ghcr.io/webwurst/homes/respa-postgres:tku-v1.9.2
+        image: ghcr.io/webwurst/homes/respa-postgres:tku-v1.9.2-1
         command:
         - sh
         - -c
