@@ -18,3 +18,4 @@ resources:
 - ./velero.yaml
 - ./nfs-ganesha.yaml
 - ./erpnext.yaml
+- ./respa.yaml
