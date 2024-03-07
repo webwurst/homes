@@ -1,0 +1,70 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: respa
+  labels:
+    app: respa
+spec:
+  selector:
+    matchLabels:
+      app: respa
+  template:
+    metadata:
+      labels:
+        app: respa
+    spec:
+      initContainers:
+      - name: pg-isready
+        image: ghcr.io/webwurst/homes/respa-postgres:tku-v1.9.2
+        command:
+        - sh
+        - -c
+        - until pg_isready -h postgres -p 5432; do echo waiting for database; sleep 2; done;
+      containers:
+      - image: ghcr.io/webwurst/homes/respa:tku-v1.9.2
+        name: respa
+        env:
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: respa
+              key: secret-key
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: respa
+              key: postgres-password
+        - name: DATABASE_URL
+          value: "postgis://respa:$(POSTGRES_PASSWORD)@postgres:5432/respa"
+        ports:
+        - name: http
+          containerPort: 8000
+        resources: {}
+        volumeMounts:
+        - name: media
+          mountPath: /var/www/media
+      volumes:
+      - name: media
+        emptyDir: {}
+        # persistentVolumeClaim:
+        #   claimName: respa-media
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: respa
+spec:
+  ports:
+  - name: http
+    appProtocol: http
+    port: 8000
+  selector:
+    app: respa
+
+---
+# ingresss
+
+---
+# certificate

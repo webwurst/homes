@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - image: ghcr.io/webwurst/homes/respa-postgres:tku-v1.9.2
+        name: postgres
+        env:
+        - name: POSTGRES_DB
+          value: respa
+        - name: POSTGRES_USER
+          value: respa
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: respa
+              key: postgres-password
+        ports:
+        - name: postgresql
+          containerPort: 5432
+        resources: {}
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgres-data
+        emptyDir: {}
+        # persistentVolumeClaim:
+        #   claimName: postgres-data
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  ports:
+  - name: postgresql
+    appProtocol: postgresql
+    port: 5432
+  selector:
+    app: postgres
