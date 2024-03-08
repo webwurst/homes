@@ -64,7 +64,37 @@ spec:
     app: respa
 
 ---
-# ingresss
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: respa
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: respa.webwur.st
+    http:
+      paths:
+      - backend:
+          service:
+            name: respa
+            port:
+              number: 8000
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - respa.webwur.st
+    secretName: respa-cert
 
 ---
-# certificate
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: respa
+spec:
+  dnsNames:
+  - respa.webwur.st
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-cluster-issuer
+  secretName: nextcloud-cert
