@@ -22,8 +22,10 @@ spec:
         - -c
         - until pg_isready -h postgres -p 5432; do echo waiting for database; sleep 2; done;
       containers:
-      - image: docker.io/webwurst/respa:tku-v1.9.2
-        name: respa
+      - name: respa
+        image: docker.io/webwurst/respa:tku-v1.9.2
+        # for possible settings see https://github.com/City-of-Turku/respa?tab=readme-ov-file#settings
+        # and https://docs.djangoproject.com/en/5.0/ref/settings/
         env:
         - name: SECRET_KEY
           valueFrom:
@@ -42,13 +44,34 @@ spec:
           containerPort: 8000
         resources: {}
         volumeMounts:
-        - name: media
-          mountPath: /var/www/media
+        - name: uwsgi-config
+          mountPath: /srv/app/deploy
+          subPath: uwsgi.ini
+        # - name: media
+        #   mountPath: /var/www/media
+
+      - name: respa-nginx
+        image: nginx:alpine
+        ports:
+        - name: http
+          protocol: TCP
+          containerPort: 8080
+        resources: {}
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/conf.d/
+
       volumes:
-      - name: media
-        emptyDir: {}
+      # - name: media
+      #   emptyDir: {}
         # persistentVolumeClaim:
         #   claimName: respa-media
+      - name: uwsgi-config
+        configMap:
+          name: uwsgi
+      - name: nginx-config
+        configMap:
+          name: nginx
 
 ---
 apiVersion: v1
@@ -59,7 +82,7 @@ spec:
   ports:
   - name: http
     appProtocol: http
-    port: 8000
+    port: 8080
   selector:
     app: respa
 

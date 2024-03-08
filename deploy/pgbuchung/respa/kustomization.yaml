@@ -7,6 +7,14 @@ resources:
 - ./respa.yaml
 - ./postgis.yaml
 
+configMapGenerator:
+- name: uwsgi
+  files:
+  - ./configs/uwsgi.ini
+- name: nginx
+  files:
+  - ./configs/nginx.conf
+
 secretGenerator:
 - name: respa
   files:
