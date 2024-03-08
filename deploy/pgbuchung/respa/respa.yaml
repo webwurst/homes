@@ -102,7 +102,7 @@ spec:
           service:
             name: respa
             port:
-              number: 8000
+              name: http
         path: /
         pathType: Prefix
   tls:
