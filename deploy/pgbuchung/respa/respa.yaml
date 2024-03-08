@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
       - name: pg-isready
-        image: docker.io/webwurst/respa-postgres:tku-v1.9.2
+        image: docker.io/webwurst/respa-postgis:tku-v1.9.2
         command:
         - sh
         - -c

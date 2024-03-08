@@ -5,7 +5,7 @@ namespace: respa
 resources:
 - ./namespace.yaml
 - ./respa.yaml
-- ./postgres.yaml
+- ./postgis.yaml
 
 secretGenerator:
 - name: respa
