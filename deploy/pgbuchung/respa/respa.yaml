@@ -45,7 +45,7 @@ spec:
         resources: {}
         volumeMounts:
         - name: uwsgi-config
-          mountPath: /srv/app/deploy
+          mountPath: /srv/app/deploy/
           subPath: uwsgi.ini
         # - name: media
         #   mountPath: /var/www/media
