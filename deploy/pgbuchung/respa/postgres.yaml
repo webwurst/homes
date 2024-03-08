@@ -15,7 +15,7 @@ spec:
         app: postgres
     spec:
       containers:
-      - image: ghcr.io/webwurst/homes/respa-postgres:tku-v1.9.2-1
+      - image: docker.io/webwurst/respa-postgres:tku-v1.9.2
         name: postgres
         env:
         - name: POSTGRES_DB

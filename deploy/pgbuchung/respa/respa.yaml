@@ -16,13 +16,13 @@ spec:
     spec:
       initContainers:
       - name: pg-isready
-        image: ghcr.io/webwurst/homes/respa-postgres:tku-v1.9.2-1
+        image: docker.io/webwurst/respa-postgres:tku-v1.9.2
         command:
         - sh
         - -c
         - until pg_isready -h postgres -p 5432; do echo waiting for database; sleep 2; done;
       containers:
-      - image: ghcr.io/webwurst/homes/respa:tku-v1.9.2
+      - image: docker.io/webwurst/respa:tku-v1.9.2
         name: respa
         env:
         - name: SECRET_KEY
