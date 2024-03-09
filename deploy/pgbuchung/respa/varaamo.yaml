@@ -1,0 +1,94 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: varaamo
+  labels:
+    app: varaamo
+spec:
+  selector:
+    matchLabels:
+      app: varaamo
+  template:
+    metadata:
+      labels:
+        app: varaamo
+    spec:
+      containers:
+      - name: varaamo
+        image: docker.io/webwurst/varaamo:tku-v1.9
+        env:
+        - name: NODE_ENV
+          value: production
+        - name: CLIENT_ID
+          value: ""
+        - name: OPENID_AUDIENCE
+          value: ""
+        - name: OPENID_AUTHORITY
+          value: ""
+        - name: API_URL
+          value: ""
+        - name: ADMIN_URL
+          value: ""
+        - name: THEME_PKG
+          value: ""
+        - name: APP_TIMEZONE
+          value: ""
+        # - name: SECRET_KEY
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: varaamo
+        #       key: secret-key
+        ports:
+        - name: http
+          containerPort: 8080
+        resources: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: varaamo
+spec:
+  ports:
+  - name: http
+    appProtocol: http
+    port: 8080
+  selector:
+    app: varaamo
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: varaamo
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: varaamo.webwur.st
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: varaamo
+            port:
+              name: http
+  tls:
+  - hosts:
+    - varaamo.webwur.st
+    secretName: varaamo-cert
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: varaamo
+spec:
+  secretName: varaamo-cert
+  dnsNames:
+  - varaamo.webwur.st
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-cluster-issuer
