@@ -24,6 +24,19 @@ spec:
       - name: migrate
         image: docker.io/webwurst/respa:tku-v1.9.2
         command: ["python", "manage.py", "migrate"]
+        env:
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: respa
+              key: secret-key
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: respa
+              key: postgres-password
+        - name: DATABASE_URL
+          value: "postgis://respa:$(POSTGRES_PASSWORD)@postgres:5432/respa"
       # - name: createsuperuser
       #   image: docker.io/webwurst/respa:tku-v1.9.2
       #   command: ["python", "manage.py", "createsuperuser", "--username=admin", "--email=admin@example.com"]
