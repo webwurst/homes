@@ -17,23 +17,33 @@ spec:
       containers:
       - name: varaamo
         image: docker.io/webwurst/varaamo:tku-v1.9
+        # see https://github.com/City-of-Turku/varaamo/blob/develop/config/webpack.production.js#L57
+        # (compare to https://github.com/City-of-Helsinki/varaamo/blob/master/config/settings.js#L42)
         env:
         - name: NODE_ENV
           value: production
         - name: CLIENT_ID
           value: ""
+        # https://github.com/City-of-Helsinki/varaamo/blob/master/server/auth/configurePassport.js#L11
+        # https://www.npmjs.com/package/redux-oidc
+        # https://github.com/maxmantz/redux-oidc-example/blob/master/src/utils/userManager.js
+        # https://github.com/maxmantz/redux-oidc-example/blob/master/src/utils/api.js#L25
+        # - name: CLIENT_SECRET  # missing ?!
+        #   value: ""
         - name: OPENID_AUDIENCE
           value: ""
         - name: OPENID_AUTHORITY
           value: ""
         - name: API_URL
-          value: ""
+          value: https://respa.webwur.st/v1/
         - name: ADMIN_URL
-          value: ""
-        - name: THEME_PKG
-          value: ""
+          value: https://respa.webwur.st/ra/
+        # - name: THEME_PKG
+        #   value: ""
         - name: APP_TIMEZONE
-          value: ""
+          value: Europe/Berlin
+        - name: BLOCK_SEARCH_ENGINE_INDEXING
+          value: "1"
         # - name: SECRET_KEY
         #   valueFrom:
         #     secretKeyRef:
