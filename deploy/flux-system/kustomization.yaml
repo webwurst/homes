@@ -19,3 +19,4 @@ resources:
 - ./nfs-ganesha.yaml
 - ./erpnext.yaml
 - ./respa.yaml
+- ./keycloak.yaml
